@@ -24,3 +24,6 @@ sample_df.to_csv('sample_150.csv', index=False, encoding='utf-8-sig')
 
 # Download the sampled file
 files.download('sample_150.csv')
+
+# Download the sampled file
+files.download('sample_150.csv')

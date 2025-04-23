@@ -1,4 +1,4 @@
-# Step 1: Upload your file
+# Step 1: Uploading each dataset
 from google.colab import files
 uploaded = files.upload()
 
@@ -19,7 +19,7 @@ sample_df = df.sample(n=150) #  get 150 completely random rows
 sample_df.head(10)  # just shows first 10, but you can scroll through all 150
 
 
-# Optional: Save the sample to a new CSV (in case you want to review offline)
+# Step 7: Save the sample to a new CSV
 sample_df.to_csv('sample_150.csv', index=False, encoding='utf-8-sig')
 
 # Download the sampled file

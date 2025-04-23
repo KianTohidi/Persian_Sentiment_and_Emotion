@@ -18,7 +18,6 @@ sample_df = df.sample(n=150) #  get 150 completely random rows
 # Step 6: Display the sample
 sample_df.head(10)  # just shows first 10, but you can scroll through all 150
 
-
 # Step 7: Save the sample to a new CSV
 sample_df.to_csv('sample_150.csv', index=False, encoding='utf-8-sig')
 

@@ -64,13 +64,19 @@ after_short = len(df)
 print("Removed short texts:", before_short - after_short)
 
 
+# Step 10: Remove entries with more than 100 words
+before_long = len(df)
+df = df[df['text'].apply(lambda x: len(str(x).split()) <= 100)]
+after_long = len(df)
+print("Removed long texts (more than 100 words):", before_long - after_long)
+
+
 print("Number of rows now:", len(df))
 
 
-# Step 10: Final check
+# Step 11: Final check
 print("Final dataset size:", len(df))
 
-# Step 11: Save the cleaned dataset
+# Step 12: Save the cleaned dataset
 df.to_csv("dataset1_cleaned.csv", index=False, encoding="utf-8-sig")
 files.download("dataset1_cleaned.csv")
-

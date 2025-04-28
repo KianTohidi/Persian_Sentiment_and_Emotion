@@ -24,10 +24,11 @@ uploaded = files.upload()
 # Step 3: Load the dataset using UTF-8-SIG encoding (important for Persian text)
 df = pd.read_csv("sentiment.csv", encoding="utf-8-sig")
 
+print("Number of rows:", len(df))
+print("\n")
+
 # View first few rows
 df.head()
-
-print("Number of rows:", len(df))
 
 
 # Step 4: Drop the unnamed index column if it exists
@@ -61,7 +62,7 @@ df.head()
 df = df.drop_duplicates(subset='text')
 
 # Check how many rows left
-print("Rows after removing duplicates:", len(df))
+print("Rows after removing duplicate comments:", len(df))
 
 
 # Step 8: Drop empty or missing texts (if any)

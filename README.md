@@ -18,15 +18,15 @@ Due to licensing restrictions, the CSV files are not included in this repository
 The codebase is organized in numerical order for reproducibility:
 
 1. `01_sentiment_dataset_cleaning.py`: Cleans and preprocesses the Persian sentiment dataset
-2. [Add descriptions for any additional code files]
+2.  02_emotion_dataset_cleaning.py: Cleans and preprocesses the Persian emotion dataset
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.x
-- pandas (tested with version 2.2.2)
-- [Any other dependencies]
+- Python 3.11.12
+- Pandas (tested with version 2.2.2)
+- NumPy (tested with version 2.0.2)
 
 ### Setup Instructions
 
@@ -44,8 +44,11 @@ To ensure reproducibility:
 
 ## License
 
-[Include your license information here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-- [Any acknowledgments you want to include]
+- Thanks to the creators of the Persian Sentiment Analysis Dataset and Arman Text Emotion Dataset for making their data available for research
+- The Natural Language Processing community for developing open techniques and resources for low-resource languages
+- Professor Simone Rebora, my supervisor for my thesis, who provided guidance during the work
+

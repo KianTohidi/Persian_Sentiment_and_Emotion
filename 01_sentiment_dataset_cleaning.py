@@ -77,6 +77,7 @@ before_short = len(df)
 df = df[df['text'].astype(str).str.len() >= 10]
 after_short = len(df)
 print("Removed short texts:", before_short - after_short)
+print("Remaining rows after removing short comments:", len(df))
 
 
 # Step 10: Remove entries with more than 100 words
@@ -84,9 +85,8 @@ print("Removed short texts:", before_short - after_short)
 before_long = len(df)
 df = df[df['text'].apply(lambda x: len(str(x).split()) <= 100)]
 after_long = len(df)
-print("Removed long texts (more than 100 words):", before_long - after_long)
-
-print("Number of rows now:", len(df))
+print("Removed long texts:", before_long - after_long)
+print("Remaining rows after removing long comments:", len(df))
 
 
 # Step 11: Final check

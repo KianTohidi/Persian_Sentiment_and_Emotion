@@ -18,7 +18,7 @@ Due to licensing restrictions, the CSV files are not included in this repository
 The codebase is organized in numerical order for reproducibility:
 
 1. `01_sentiment_dataset_cleaning.py`: Cleans and preprocesses the Persian sentiment dataset
-2.  02_emotion_dataset_cleaning.py: Cleans and preprocesses the Persian emotion dataset
+2.  `02_emotion_dataset_cleaning.py`: Cleans and preprocesses the Persian emotion dataset
 
 ## Getting Started
 

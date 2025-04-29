@@ -108,6 +108,7 @@ def save_final_dataset():
 # Step 9: Example usage - Process first batch of texts
 # Note: Change batch_num to process different batches
 # Due to repetition, I just shared one in below. For visual analysis, all 54 batches need to be done
+
 batch_num = 1
 numbered_text, current_batch = get_batch(batch_num)
 print(f"Generated {len(current_batch)} numbered texts for review")
@@ -128,9 +129,15 @@ print(numbered_text)
 
 
 mark_for_removal(1, [1, 3, 7, 9, 20, 38, 42, 54, 74])
-
-
-
+mark_for_removal(2, [22, 23, 28, 32, 69, 71])
+mark_for_removal(3, [13, 32, 45, 58, 80, 86, 92])
+mark_for_removal(4, [4, 20, 31, 68, 90, 99])
+mark_for_removal(5, [7, 14, 20, 25, 55, 85, 88, 99])
+mark_for_removal(6, [10, 14, 26, 44, 51, 69, 70, 76])
+mark_for_removal(7, [15, 26, 50, 85, 87, 89, 97])
+mark_for_removal(8, [10, 15, 50, 78, 80, 89, 93, 94])
+mark_for_removal(9, [26, 36, 50, 82])
+mark_for_removal(10, [1, 2, 5, 9, 24, 30, 31, 39, 40, 71, 78, 86, 98])
 
 
 

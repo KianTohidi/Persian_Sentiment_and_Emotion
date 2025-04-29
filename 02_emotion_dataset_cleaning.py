@@ -1,103 +1,84 @@
-# Data Cleaning and Processing Pipeline
+"""
+Persian Emotion Detection Dataset Cleaning Part 1
+-------------------------------------------
+This script cleans and preprocesses the Persian social media and e-commerce dataset for emotion detection.
+Input: Raw TSV files with social media and e-commerce entries and emotion labels
+Output: Cleaned CSV with standardized text and emotion labels
+Dependencies: pandas (tested with version 2.2.2)
+"""
+
+
+# Step 1: Import pandas
 import pandas as pd
+
+
+# Step 2: Upload the dataset files
+# IMPORTANT: Before running this cell:
+# 1. Download the TSV dataset files from the GitHub website (link in the README).
+# 2. To do this, on the website link, click the "dataset" folder. Then you will see two TSV files there.
+# 3. Click on one of them, and then on the right, you can see the download symbol. Click "Download raw file". Do the same for the other file.
+# 4. Ensure both 'train.tsv' and 'test.tsv' are available for upload. During uploading the files, in order to upload both files, press the "Ctrl" button on the keyboard, then select both files to be uploaded.
 from google.colab import files
+uploaded = files.upload()
 
 
-# Step 1: Upload and Load Datasets
-print("Please upload both dataset files (dataset3_part1.csv and dataset3_part2.csv):")
-uploaded = files.upload()  # Upload both files
+# Step 3: Load the TSV files using UTF-8-SIG encoding (important for Persian text)
+df1 = pd.read_csv('train.tsv', sep='\t', encoding="utf-8-sig", header=None, names=['text', 'emotion'])
+df2 = pd.read_csv('test.tsv', sep='\t', encoding="utf-8-sig", header=None, names=['text', 'emotion'])
+print("Train dataset rows:", len(df1))
+print("Test dataset rows:", len(df2))
+print("\n")
+
+# View first few rows of train dataset
+df1.head()
 
 
-# Load both datasets using UTF-8-SIG encoding
-df1 = pd.read_csv("dataset3_part1.csv", header=None, encoding='utf-8-sig')
-df2 = pd.read_csv("dataset3_part2.csv", header=None, encoding='utf-8-sig')
-
-
-# Step 2: Initial Dataset Analysis
-print("\n===== Initial Dataset Analysis =====")
-print(f"Rows in part 1: {len(df1)}")
-print(f"Rows in part 2: {len(df2)}")
-print(f"Total rows before merging: {len(df1) + len(df2)}")
-
-
-
-
-
-# Step 3: Merge Datasets
+# Step 4: Merge datasets for unified processing
 merged_df = pd.concat([df1, df2], ignore_index=True)
-print(f"\nTotal rows after merge: {len(merged_df)}")
+print("Total rows after merge:", len(merged_df))
 
-
-
-
-# Step 4: Add Column Names
-merged_df.columns = ['text', 'emotion']
-print("\n===== Dataset Preview =====")
+# View first few rows of merged dataset
 merged_df.head()
 
 
-# Step 5: Clean the Dataset
-print("\n===== Cleaning Process =====")
-
-
-# Remove empty or missing text entries
-rows_before = len(merged_df)
+# Step 5: Remove empty or missing text entries
+before_empty = len(merged_df)
 merged_df = merged_df.dropna(subset=['text'])
 merged_df = merged_df[merged_df['text'].astype(str).str.strip() != '']
-rows_after = len(merged_df)
-print(f"✅ Removed empty text entries: {rows_before - rows_after}")
+after_empty = len(merged_df)
+print("Removed empty texts:", before_empty - after_empty)
+print("Rows after removing empty texts:", len(merged_df))
 
 
-
-# Remove duplicate text entries
-rows_before = len(merged_df)
+# Step 6: Remove duplicate text entries to avoid bias
+before_duplicates = len(merged_df)
 merged_df = merged_df.drop_duplicates(subset='text')
-rows_after = len(merged_df)
-print(f"✅ Removed duplicate texts: {rows_before - rows_after}")
+after_duplicates = len(merged_df)
+print("Removed duplicate texts:", before_duplicates - after_duplicates)
+print("Rows after removing duplicate texts:", len(merged_df))
 
 
-
-
-# Remove short texts (less than 10 characters)
-rows_before = len(merged_df)
+# Step 7: Apply minimum text length threshold of 10 characters
+# Very short texts typically don't contain enough information for emotion detection
+before_short = len(merged_df)
 merged_df = merged_df[merged_df['text'].astype(str).str.len() >= 10]
-rows_after = len(merged_df)
-print(f"✅ Removed short texts: {rows_before - rows_after}")
+after_short = len(merged_df)
+print("Removed short texts:", before_short - after_short)
+print("Remaining rows after removing short texts:", len(merged_df))
 
 
+# Step 8: Remove entries with more than 100 words
+# Extremely long texts might be outliers or not typical social media content
+before_long = len(merged_df)
+merged_df = merged_df[merged_df['text'].apply(lambda x: len(str(x).split()) <= 100)]
+after_long = len(merged_df)
+print("Removed long texts:", before_long - after_long)
+print("Remaining rows after removing long texts:", len(merged_df))
 
 
-# Remove long texts (more than 100 words)
-rows_before = len(merged_df)
-merged_df = merged_df[merged_df['text'].astype(str).apply(lambda x: len(x.split())) <= 100]
-rows_after = len(merged_df)
-print(f"✅ Removed overly long texts (>100 words): {rows_before - rows_after}")
-
-
-
-# Remove 'other' emotion labels
-rows_before = len(merged_df)
-merged_df = merged_df[merged_df['emotion'].astype(str).str.strip().str.lower() != 'other']
-rows_after = len(merged_df)
-print(f"✅ Removed 'other' emotion labels: {rows_before - rows_after}")
-
-
-
-
-# Checking if “OTHER” is removed
-
-merged_df.head()
-
-
-# Step 6: Standardize Emotion Labels
-# Ensure all labels are lowercase and stripped first
+# Step 9: Standardize emotion labels for consistency
+# Ensure all labels are lowercase and stripped
 merged_df['emotion'] = merged_df['emotion'].astype(str).str.strip().str.lower()
-
-
-# Checking lowercase
-
-merged_df.head()
-
 
 # Define mapping from verb-like to noun labels
 emotion_mapping = {
@@ -106,45 +87,32 @@ emotion_mapping = {
     'fear': 'fear',
     'angry': 'anger',
     'surprise': 'surprise',
-    'happy': 'happiness'
+    'happy': 'happiness',
+    'other': 'other'
 }
 
-
-# Apply mapping
+# Apply mapping to standardize labels
 merged_df['emotion'] = merged_df['emotion'].replace(emotion_mapping)
 
 
-# Check unique emotion labels after standardization
-print("\n===== Quality Control =====")
-print("Unique emotion labels after standardization:")
-print(merged_df['emotion'].unique())
+# Step 10: Remove 'other' emotion category (optional)
+before_other = len(merged_df)
+merged_df = merged_df[merged_df['emotion'] != 'other']
+after_other = len(merged_df)
+print("Removed 'other' emotion labels:", before_other - after_other)
+print("Remaining rows after removing 'other' category:", len(merged_df))
 
 
-
-['sadness' 'happiness' 'surprise' 'fear' 'hate' 'anger']
-
-
-# visual checking
-
-merged_df.head()
+# Step 11: Check distribution of emotions in final dataset
+print("\nDistribution of emotions:")
+print(merged_df['emotion'].value_counts())
 
 
-# Step 7: Final Dataset Information
-print("\n===== Final Dataset Information =====")
-print(f"Final dataset size: {len(merged_df)}")
-print("\nFinal dataset preview:")
-merged_df.head()
+# Step 12: Final check
+print("Final dataset size:", len(merged_df))
 
 
-
-
-# Step 8: Save the Cleaned Dataset
-cleaned_file = "dataset3_cleaned.csv"
-merged_df.to_csv(cleaned_file, index=False, encoding="utf-8-sig")
-print(f"\nCleaned dataset saved as '{cleaned_file}'")
-files.download(cleaned_file)
-print("Download initiated.")
-
-
-
+# Step 13: Save the cleaned dataset
+merged_df.to_csv("emotion_cleaned.csv", index=False, encoding="utf-8-sig")
+files.download("emotion_cleaned.csv")
 

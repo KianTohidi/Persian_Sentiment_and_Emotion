@@ -121,6 +121,7 @@ print(numbered_text)
 # Example: mark_for_removal(1, [3, 7, 12]) Replace with your actual batch number and text numbers
 # Below, you can see the removal of e-commerce entries that had been conducted. Shared for reproducibility 
 
+print("\n\n")
 mark_for_removal(1, [1, 3, 7, 9, 20, 38, 42, 54, 74, 84, 97])
 mark_for_removal(2, [22, 23, 26, 28, 32, 52, 69, 71])
 mark_for_removal(3, [13, 32, 45, 58, 80, 86, 92])

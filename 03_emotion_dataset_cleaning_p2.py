@@ -107,6 +107,7 @@ def save_final_dataset():
 
 # Step 9: Example usage - Process first batch of texts
 # Note: Change batch_num to process different batches
+# Due to repetition, I just shared one in below. For visual analysis, all 54 batches need to be done
 batch_num = 1
 numbered_text, current_batch = get_batch(batch_num)
 print(f"Generated {len(current_batch)} numbered texts for review")
@@ -119,6 +120,19 @@ print(numbered_text)
 # After review, use mark_for_removal() to flag e-commerce texts
 
 # Example: mark_for_removal(1, [3, 7, 12]) Replace with your actual batch number and text numbers
+
+
+# In below, you can see the actual removal of e-commerce entries that had been conducted. Shared for reproducibility 
+
+
+
+
+mark_for_removal(1, [1, 3, 7, 9, 20, 38, 42, 54, 74])
+
+
+
+
+
 
 # When all batches have been reviewed, call save_final_dataset() to finalize
 

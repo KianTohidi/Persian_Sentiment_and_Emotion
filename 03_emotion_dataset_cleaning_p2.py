@@ -107,7 +107,7 @@ def save_final_dataset():
 
 # Step 9: Example usage - Process first batch of texts
 # Note: Change batch_num to process different batches
-# Due to repetition, I just shared one in below. For visual analysis, all 54 batches need to be done
+# Due to repetition, I just shared one below. For visual analysis, all 54 batches need to be done
 
 batch_num = 1
 numbered_text, current_batch = get_batch(batch_num)
@@ -117,16 +117,9 @@ print("---------------------------------------------------")
 print(numbered_text)
 
 
-
-# After review, use mark_for_removal() to flag e-commerce texts
-
+# Step 10: After review, use mark_for_removal() to flag e-commerce texts
 # Example: mark_for_removal(1, [3, 7, 12]) Replace with your actual batch number and text numbers
-
-
-# In below, you can see the actual removal of e-commerce entries that had been conducted. Shared for reproducibility 
-
-
-
+# Below, you can see the removal of e-commerce entries that had been conducted. Shared for reproducibility 
 
 mark_for_removal(1, [1, 3, 7, 9, 20, 38, 42, 54, 74, 84, 97])
 mark_for_removal(2, [22, 23, 26, 28, 32, 52, 69, 71])
@@ -154,6 +147,22 @@ mark_for_removal(23, [10, 18, 19, 46, 54, 73, 79, 80, 81, 83, 94])
 mark_for_removal(24, [11, 27, 37, 40, 64, 73, 80, 88, 92, 93])
 mark_for_removal(25, [9, 10, 16, 18, 26, 32, 35, 51, 55, 71, 86])
 mark_for_removal(26, [])
+mark_for_removal(27, [])
+mark_for_removal(28, [])
+mark_for_removal(29, [])
+mark_for_removal(30, [])
+mark_for_removal(31, [])
+mark_for_removal(32, [])
+mark_for_removal(33, [])
+mark_for_removal(34, [])
+mark_for_removal(35, [])
+mark_for_removal(36, [])
+mark_for_removal(37, [])
+mark_for_removal(38, [])
+mark_for_removal(39, [])
+mark_for_removal(40, [])
+mark_for_removal(41, [])
+mark_for_removal(42, [])
 mark_for_removal(43, [70])
 mark_for_removal(44, [74, 78, 88])
 mark_for_removal(45, [3, 44, 80, 81, 89])
@@ -168,26 +177,10 @@ mark_for_removal(53, [14, 37, 61, 62, 85, 92, 97])
 mark_for_removal(54, [2])
 
 
-
-
-# When all batches have been reviewed, call save_final_dataset() to finalize
-
-
+# Step 11: When all batches have been reviewed, call save_final_dataset() to finalize
 
 save_final_dataset()
 
 from google.colab import files
 files.download("emotion_ecommerce_cleaned.csv")
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -12,7 +12,13 @@ Dependencies: pandas (tested with version 2.2.2), numpy (tested with version 2.0
 import pandas as pd
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
 from google.colab import files
+
+# Suppress FutureWarnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 # Step 2: Upload the previously cleaned dataset
@@ -87,11 +93,17 @@ def save_final_dataset():
     """
     Remove all entries marked as e-commerce and save the final dataset
     """
+    # Store initial emotion counts before removal
+    initial_emotions = df['emotion'].value_counts().sort_index()
+    
     # Remove all entries marked as e-commerce
     initial_count = len(df)
     final_df = df[~df['is_ecommerce']].copy()
     final_df = final_df.drop(columns=['is_ecommerce'])
     removed_count = initial_count - len(final_df)
+    
+    # Get final emotion counts after removal
+    final_emotions = final_df['emotion'].value_counts().sort_index()
     
     # Save the cleaned dataset
     final_df.to_csv("emotion_ecommerce_cleaned.csv", index=False, encoding="utf-8-sig")
@@ -103,6 +115,106 @@ def save_final_dataset():
     # Show distribution of emotions in final dataset
     print("\nEmotion distribution in final dataset:")
     print(final_df['emotion'].value_counts())
+    
+    # Add a simple visualization of before/after dataset size
+    plt.figure(figsize=(10, 6))
+    sizes = [initial_count, len(final_df)]
+    labels = ['Before Cleaning', 'After Cleaning']
+    
+    plt.bar(labels, sizes, color=['lightblue', 'lightgreen'])
+    plt.title('Dataset Size Before and After E-commerce Review Removal')
+    plt.ylabel('Number of Entries')
+    
+    # Add count labels on bars
+    for i, count in enumerate(sizes):
+        plt.text(i, count + 50, str(count), ha='center')
+    
+    plt.tight_layout()
+    plt.show()
+    
+    # Add comparison visualization of emotion distribution before and after
+    plt.figure(figsize=(12, 8))
+    
+    # Create a DataFrame for side-by-side comparison
+    comparison_data = pd.DataFrame({
+        'Before': initial_emotions,
+        'After': final_emotions
+    }).fillna(0)
+    
+    # Create grouped bar chart
+    comparison_data.plot(kind='bar', figsize=(12, 6))
+    plt.title('Emotion Distribution Comparison: Before vs After E-commerce Removal')
+    plt.xlabel('Emotion')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    
+    # Add count labels on bars
+    for i, emotion in enumerate(comparison_data.index):
+        plt.text(i-0.2, comparison_data.loc[emotion, 'Before'] + 20, 
+                 str(int(comparison_data.loc[emotion, 'Before'])), ha='center')
+        plt.text(i+0.2, comparison_data.loc[emotion, 'After'] + 20, 
+                 str(int(comparison_data.loc[emotion, 'After'])), ha='center')
+    
+    plt.legend(title='')
+    plt.tight_layout()
+    plt.show()
+    
+    # Add an improved, professional visualization of emotion distribution after cleaning
+    plt.figure(figsize=(14, 8))
+    
+    # Set a modern, professional color palette
+    colors = sns.color_palette("viridis", len(final_df['emotion'].unique()))
+    
+    # Create the plot with enhanced aesthetics
+    ax = sns.countplot(
+        x='emotion', 
+        data=final_df, 
+        palette=colors,
+        edgecolor='black',
+        linewidth=1.2
+    )
+    
+    # Customize the plot appearance
+    plt.title('Emotion Distribution After Cleaning', fontsize=18, fontweight='bold', pad=20)
+    plt.xlabel('Emotion Category', fontsize=14, fontweight='bold')
+    plt.ylabel('Number of Instances', fontsize=14, fontweight='bold')
+    plt.xticks(rotation=30, fontsize=12, fontweight='bold')
+    plt.yticks(fontsize=12)
+    
+    # Add a light grid for better readability
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    
+    # Add value labels and percentages on top of each bar
+    total = len(final_df)
+    for p in ax.patches:
+        height = p.get_height()
+        percentage = round((height / total) * 100, 1)
+        
+        # Add count and percentage on top of each bar
+        ax.text(
+            p.get_x() + p.get_width()/2.,
+            height + 10,
+            f'{int(height)}\n({percentage}%)',
+            ha="center",
+            fontsize=11,
+            fontweight='bold',
+            bbox=dict(facecolor='white', alpha=0.8, boxstyle="round,pad=0.3", edgecolor='gray')
+        )
+    
+    # Add a text box with dataset stats
+    props = dict(boxstyle='round', facecolor='white', edgecolor='gray', alpha=0.9)
+    textstr = f'Total Dataset Size: {total}\nEmotions: {len(final_df["emotion"].unique())}'
+    plt.figtext(0.15, 0.02, textstr, fontsize=12, bbox=props)
+    
+    # Add spacing for better visualization
+    plt.subplots_adjust(bottom=0.15, top=0.9)
+    
+    # Add a thin border around the plot
+    for spine in ax.spines.values():
+        spine.set_linewidth(1.5)
+        
+    plt.tight_layout()
+    plt.show()
 
 
 # Step 9: Example usage - Process first batch of texts
@@ -184,4 +296,3 @@ save_final_dataset()
 
 from google.colab import files
 files.download("emotion_ecommerce_cleaned.csv")
-

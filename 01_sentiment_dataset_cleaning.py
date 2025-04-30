@@ -99,6 +99,7 @@ after_duplicates = len(df)
 
 print("Removed duplicate rows:", before_duplicates - after_duplicates)
 print("Rows after removing duplicate texts:", after_duplicates)
+print("\n")
 
 
 # Step 9: Drop empty or missing texts (if any)
@@ -109,6 +110,7 @@ after_empty = len(df)
 
 print("Removed empty rows:", before_empty - after_empty)
 print("Remaining rows after removing empty rows:", after_empty)
+print("\n")
 
 
 # Step 10: Apply a minimum text length threshold of 10 characters
@@ -119,6 +121,7 @@ after_short = len(df)
 
 print("Removed short texts:", before_short - after_short)
 print("Remaining rows after removing short texts:", len(df))
+print("\n")
 
 
 # Step 11: Remove entries with more than 100 words
@@ -129,6 +132,7 @@ after_long = len(df)
 
 print("Removed long texts:", before_long - after_long)
 print("Remaining rows after removing long texts:", len(df))
+print("\n")
 
 
 # Step 12: Final check

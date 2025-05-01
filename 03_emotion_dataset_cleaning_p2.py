@@ -4,7 +4,7 @@ Persian Emotion Detection Dataset Cleaning Part 2
 This script identifies and removes e-commerce reviews from the previously cleaned Persian emotion detection dataset.
 Input: Cleaned CSV from Part 1 containing text entries and emotion labels
 Output: Final CSV with e-commerce reviews removed
-Dependencies: pandas (tested with version 2.2.2), numpy (tested with version 2.0.2), Python math module built-in
+Dependencies: pandas (tested with version 2.2.2), numpy (tested with version 2.0.2), Python math module built-in, matplotlib (tested with version 3.10.0), seaborn (tested with version 0.13.2)
 """
 
 
@@ -14,11 +14,9 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import seaborn as sns
-import warnings
 from google.colab import files
 
-# Suppress FutureWarnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
 
 
 # Step 2: Upload the previously cleaned dataset
@@ -169,9 +167,11 @@ def save_final_dataset():
     ax = sns.countplot(
         x='emotion', 
         data=final_df, 
+        hue='emotion',  # Added hue parameter to match x
         palette=colors,
         edgecolor='black',
-        linewidth=1.2
+        linewidth=1.2,
+        legend=False    # Set legend to False since hue is same as x
     )
     
     # Customize the plot appearance

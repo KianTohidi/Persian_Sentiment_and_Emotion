@@ -2,8 +2,8 @@
 Persian Sentiment Analysis - Balanced Dataset Creation
 -----------------------------------------------------
 This script creates a balanced dataset for Persian sentiment analysis by sampling an equal number of entries from each sentiment class.
-Input: Cleaned CSV file with Persian Instagram comments and sentiment labels
-Output: Balanced CSV with equal representation of each sentiment class
+Input: Cleaned CSV file with Persian texts and sentiment labels (sentiment_cleaned.csv)
+Output: Balanced CSV with equal representation of each sentiment class (sentiment_balanced.csv)
 Dependencies: pandas (tested with version 2.2.2), numpy (tested with version 2.0.2)
 
 Purpose: The balanced dataset provides an unbiased analysis.

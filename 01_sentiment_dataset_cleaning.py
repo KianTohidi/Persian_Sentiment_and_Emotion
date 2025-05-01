@@ -65,7 +65,7 @@ df.head()
 plt.figure(figsize=(10, 6))
 sentiment_before = df['sentiment'].value_counts()
 
-# Use hue parameter instead of palette to avoid FutureWarning
+# Use hue parameter
 ax = sns.countplot(x='sentiment', hue='sentiment', data=df, palette='viridis', legend=False)
 plt.title('Sentiment Distribution - Before Cleaning', fontsize=16)
 plt.xlabel('Sentiment', fontsize=14)

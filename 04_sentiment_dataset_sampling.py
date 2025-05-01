@@ -20,7 +20,7 @@ import io
 
 
 # Step 2: Upload the cleaned CSV file
-print("Please upload your sentiment cleaned CSV file: (sentiment_cleaned.csv)")
+print("Please upload your cleaned Persian sentiment analysis CSV file: (sentiment_cleaned.csv)")
 uploaded = files.upload()
 
 

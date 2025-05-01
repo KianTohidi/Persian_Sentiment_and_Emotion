@@ -291,8 +291,7 @@ mark_for_removal(54, [2])
 
 
 # Step 11: When all batches have been reviewed, call save_final_dataset() to finalize
-
 save_final_dataset()
 
-from google.colab import files
 files.download("emotion_ecommerce_cleaned.csv")
+

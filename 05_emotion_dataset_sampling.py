@@ -2,11 +2,11 @@
 Persian Emotion Detection - Balanced Dataset Creation
 ----------------------------------------------------
 This script creates a balanced dataset for Persian emotion detection by sampling an equal number of entries from each emotion class.
-Input: Cleaned CSV file with Persian text entries and emotion labels (emotion_ecommerce_cleaned.csv)
+Input: Cleaned CSV file with Persian texts and emotion labels (emotion_ecommerce_cleaned.csv)
 Output: Balanced CSV with equal representation of each emotion class (emotion_balanced.csv)
 Dependencies: pandas (tested with version 2.2.2), numpy (tested with version 2.0.2)
 
-Purpose: The balanced dataset provides an unbiased training corpus for emotion detection models.
+Purpose: The balanced dataset provides an unbiased analysis.
 This script takes the previously cleaned emotion dataset and creates a balanced version
 by sampling an equal number of entries from each emotion class (sadness, happiness, surprise, fear, hate, anger).
 """
@@ -20,7 +20,7 @@ import io
 
 
 # Step 2: Upload the cleaned CSV file
-print("Please upload your Persian emotion detection CSV file: (emotion_ecommerce_cleaned.csv)")
+print("Please upload your emotion ecommerce cleaned CSV file: (emotion_ecommerce_cleaned.csv)")
 uploaded = files.upload()
 
 
@@ -117,5 +117,4 @@ for emotion in emotions:
     balanced_percentage = (sampled_emotion_counts.get(emotion, 0) / len(sampled_data)) * 100
     change = balanced_percentage - original_percentage
     print(f"{emotion.capitalize()}: {change:+.1f} percentage points")
-
 

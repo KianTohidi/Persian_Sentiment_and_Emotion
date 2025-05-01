@@ -21,6 +21,7 @@ The codebase is organized in numerical order for reproducibility:
 2. `02_emotion_dataset_cleaning_p1.py`: Cleans and preprocesses the Persian emotion dataset (Part 1)
 3. `03_emotion_dataset_cleaning_p2.py`: Cleans and preprocesses the Persian emotion dataset (Part 2)
 4. `04_sentiment_dataset_sampling.py`: Samples and balances the Persian sentiment dataset
+5. `05_emotion_dataset_sampling.py`: Samples and balances the Persian emotion dataset
 
 ## Getting Started
 

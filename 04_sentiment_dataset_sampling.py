@@ -20,7 +20,7 @@ import io
 
 
 # Step 2: Upload the cleaned CSV file
-print("Please upload your cleaned Persian sentiment analysis CSV file: (sentiment_cleaned.csv)")
+print("Please upload your sentiment cleaned CSV file: (sentiment_cleaned.csv)")
 uploaded = files.upload()
 
 
@@ -46,8 +46,11 @@ for sentiment, count in sentiment_counts.items():
     percentage = (count / len(df)) * 100
     print(f"{sentiment.capitalize()}: {count} entries ({percentage:.1f}%)")
 
+# Step 6: Set a fixed random seed for reproducibility
+random_seed = 42
+print(f"\nUsing fixed random seed: {random_seed} for reproducibility")
 
-# Step 6: Create a balanced dataset by sampling an equal number from each sentiment class
+# Step 7: Create a balanced dataset by sampling an equal number from each sentiment class
 sample_size = 300  # Number of entries to sample from each sentiment class
 sampled_data = pd.DataFrame()
 
@@ -63,18 +66,18 @@ for sentiment in ['negative', 'positive', 'neutral']:
         sampled_sentiment = sentiment_df
     else:
         # Randomly sample the specified number of entries with a fixed random seed for reproducibility
-        sampled_sentiment = sentiment_df.sample(n=sample_size, random_state=42)
+        sampled_sentiment = sentiment_df.sample(n=sample_size, random_state=random_seed)
     
     # Add to the sampled dataframe
     sampled_data = pd.concat([sampled_data, sampled_sentiment])
 
 
-# Step 7: Shuffle the sampled data to avoid any sequence bias
+# Step 8: Shuffle the sampled data to avoid any sequence bias
 # Using a fixed random seed ensures reproducibility
-sampled_data = sampled_data.sample(frac=1, random_state=42).reset_index(drop=True)
+sampled_data = sampled_data.sample(frac=1, random_state=random_seed).reset_index(drop=True)
 
 
-# Step 8: Display information about the balanced dataset
+# Step 9: Display information about the balanced dataset
 print("\n=== BALANCED DATASET INFORMATION ===")
 print(f"Total number of entries: {len(sampled_data)}")
 
@@ -86,17 +89,17 @@ for sentiment, count in sampled_sentiment_counts.items():
     print(f"{sentiment.capitalize()}: {count} entries ({percentage:.1f}%)")
 
 
-# Step 9: Save the balanced dataset to a new CSV file with proper encoding
+# Step 10: Save the balanced dataset to a new CSV file with proper encoding
 output_file = 'sentiment_balanced.csv'
 sampled_data.to_csv(output_file, index=False, encoding='utf-8-sig')
 
 
-# Step 10: Download the balanced dataset
+# Step 11: Download the balanced dataset
 files.download(output_file)
 print(f"\nFile '{output_file}' has been created and downloaded successfully.")
 
 
-# Step 11: Comparison summary between original and balanced datasets
+# Step 12: Comparison summary between original and balanced datasets
 print("\n=== COMPARISON SUMMARY ===")
 print(f"Original dataset size: {len(df)} entries")
 print(f"Balanced dataset size: {len(sampled_data)} entries")
@@ -109,5 +112,3 @@ for sentiment in ['negative', 'positive', 'neutral']:
     balanced_percentage = (sampled_sentiment_counts.get(sentiment, 0) / len(sampled_data)) * 100
     change = balanced_percentage - original_percentage
     print(f"{sentiment.capitalize()}: {change:+.1f} percentage points")
-
-    

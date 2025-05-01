@@ -46,9 +46,11 @@ for sentiment, count in sentiment_counts.items():
     percentage = (count / len(df)) * 100
     print(f"{sentiment.capitalize()}: {count} entries ({percentage:.1f}%)")
 
+
 # Step 6: Set a fixed random seed for reproducibility
 random_seed = 42
 print(f"\nUsing fixed random seed: {random_seed} for reproducibility")
+
 
 # Step 7: Create a balanced dataset by sampling an equal number from each sentiment class
 sample_size = 300  # Number of entries to sample from each sentiment class
@@ -112,3 +114,4 @@ for sentiment in ['negative', 'positive', 'neutral']:
     balanced_percentage = (sampled_sentiment_counts.get(sentiment, 0) / len(sampled_data)) * 100
     change = balanced_percentage - original_percentage
     print(f"{sentiment.capitalize()}: {change:+.1f} percentage points")
+

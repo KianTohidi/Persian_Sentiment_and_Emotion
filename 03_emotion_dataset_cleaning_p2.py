@@ -229,69 +229,65 @@ print("---------------------------------------------------")
 print(numbered_text)
 
 
-# Step 10: After review, use mark_for_removal() to flag e-commerce texts
-# Example: mark_for_removal(1, [3, 7, 12]) Replace with your actual batch number and text numbers
+# Step 10: Define e-commerce text numbers to be removed by batch
 # Below, you can see the removal of e-commerce entries that had been conducted. Shared for reproducibility 
+# Using a dictionary for better organization and cleaner code
+ecommerce_batches = {
+    1: [1, 3, 7, 9, 20, 38, 42, 54, 74, 84, 97],
+    2: [22, 23, 26, 28, 32, 52, 69, 71],
+    3: [13, 32, 45, 58, 80, 86, 92],
+    4: [4, 20, 31, 43, 68, 90, 99],
+    5: [6, 7, 14, 20, 25, 36, 55, 85, 88, 99],
+    6: [10, 14, 26, 39, 44, 51, 69, 70, 76, 86],
+    7: [15, 26, 50, 85, 87, 89, 97],
+    8: [10, 15, 50, 57, 78, 80, 89, 93, 94],
+    9: [26, 36, 50, 59, 82],
+    10: [1, 2, 5, 9, 24, 30, 31, 39, 40, 71, 78, 86, 98],
+    11: [6, 32, 57, 58, 69, 80, 85, 98],
+    12: [12, 28, 41, 59, 61, 71, 88, 100],
+    13: [14, 21, 24, 30, 35, 36, 42, 44, 63, 74, 78, 83],
+    14: [7, 28, 30, 34, 66],
+    15: [24, 34, 35, 43],
+    16: [9, 49, 50, 61, 62, 76, 79, 91],
+    17: [27, 33, 34, 38, 56, 64, 68, 71, 79, 84, 100],
+    18: [10, 12, 33, 37, 51, 55, 56, 58, 62, 65, 69, 81],
+    19: [10, 12, 19, 24, 42, 69, 72, 93, 99],
+    20: [21, 23, 45, 70, 71, 92],
+    21: [8, 27, 31, 32, 42, 59, 93, 95, 97],
+    22: [13, 20, 29, 39, 46, 53, 54, 63, 69, 73, 78, 87],
+    23: [10, 18, 19, 46, 54, 73, 79, 80, 81, 83, 94],
+    24: [11, 27, 37, 40, 64, 73, 80, 88, 92, 93],
+    25: [9, 10, 16, 18, 26, 32, 35, 51, 55, 71, 86],
+    # Batches 26-42 have no e-commerce entries
+    43: [70],
+    44: [74, 78, 88],
+    45: [3, 44, 80, 81, 89],
+    46: [2, 5, 11, 29, 84, 91, 98],
+    47: [19, 25, 88],
+    48: [16, 36, 38, 59, 97],
+    49: [41, 73, 82],
+    50: [34, 44, 67, 77, 90, 99],
+    51: [1, 4, 81, 91, 92, 94],
+    52: [42, 76, 81, 86, 87],
+    53: [14, 37, 61, 62, 85, 92, 97],
+    54: [2]
+}
 
+# Process all batches at once using the dictionary
 print("\n\n")
-mark_for_removal(1, [1, 3, 7, 9, 20, 38, 42, 54, 74, 84, 97])
-mark_for_removal(2, [22, 23, 26, 28, 32, 52, 69, 71])
-mark_for_removal(3, [13, 32, 45, 58, 80, 86, 92])
-mark_for_removal(4, [4, 20, 31, 43, 68, 90, 99])
-mark_for_removal(5, [6, 7, 14, 20, 25, 36, 55, 85, 88, 99])
-mark_for_removal(6, [10, 14, 26, 39, 44, 51, 69, 70, 76, 86])
-mark_for_removal(7, [15, 26, 50, 85, 87, 89, 97])
-mark_for_removal(8, [10, 15, 50, 57, 78, 80, 89, 93, 94])
-mark_for_removal(9, [26, 36, 50, 59, 82])
-mark_for_removal(10, [1, 2, 5, 9, 24, 30, 31, 39, 40, 71, 78, 86, 98])
-mark_for_removal(11, [6, 32, 57, 58, 69, 80, 85, 98])
-mark_for_removal(12, [12, 28, 41, 59, 61, 71, 88, 100])
-mark_for_removal(13, [14, 21, 24, 30, 35, 36, 42, 44, 63, 74, 78, 83])
-mark_for_removal(14, [7, 28, 30, 34, 66])
-mark_for_removal(15, [24, 34, 35, 43])
-mark_for_removal(16, [9, 49, 50, 61, 62, 76, 79, 91])
-mark_for_removal(17, [27, 33, 34, 38, 56, 64, 68, 71, 79, 84, 100])
-mark_for_removal(18, [10, 12, 33, 37, 51, 55, 56, 58, 62, 65, 69, 81])
-mark_for_removal(19, [10, 12, 19, 24, 42, 69, 72, 93, 99])
-mark_for_removal(20, [21, 23, 45, 70, 71, 92])
-mark_for_removal(21, [8, 27, 31, 32, 42, 59, 93, 95, 97])
-mark_for_removal(22, [13, 20, 29, 39, 46, 53, 54, 63, 69, 73, 78, 87])
-mark_for_removal(23, [10, 18, 19, 46, 54, 73, 79, 80, 81, 83, 94])
-mark_for_removal(24, [11, 27, 37, 40, 64, 73, 80, 88, 92, 93])
-mark_for_removal(25, [9, 10, 16, 18, 26, 32, 35, 51, 55, 71, 86])
-mark_for_removal(26, [])
-mark_for_removal(27, [])
-mark_for_removal(28, [])
-mark_for_removal(29, [])
-mark_for_removal(30, [])
-mark_for_removal(31, [])
-mark_for_removal(32, [])
-mark_for_removal(33, [])
-mark_for_removal(34, [])
-mark_for_removal(35, [])
-mark_for_removal(36, [])
-mark_for_removal(37, [])
-mark_for_removal(38, [])
-mark_for_removal(39, [])
-mark_for_removal(40, [])
-mark_for_removal(41, [])
-mark_for_removal(42, [])
-mark_for_removal(43, [70])
-mark_for_removal(44, [74, 78, 88])
-mark_for_removal(45, [3, 44, 80, 81, 89])
-mark_for_removal(46, [2, 5, 11, 29, 84, 91, 98])
-mark_for_removal(47, [19, 25, 88])
-mark_for_removal(48, [16, 36, 38, 59, 97])
-mark_for_removal(49, [41, 73, 82])
-mark_for_removal(50, [34, 44, 67, 77, 90, 99])
-mark_for_removal(51, [1, 4, 81, 91, 92, 94])
-mark_for_removal(52, [42, 76, 81, 86, 87])
-mark_for_removal(53, [14, 37, 61, 62, 85, 92, 97])
-mark_for_removal(54, [2])
+print("Processing e-commerce text removal for all batches:")
+total_removed = 0
+for batch_num, text_numbers in ecommerce_batches.items():
+    mark_for_removal(batch_num, text_numbers)
+    total_removed += len(text_numbers)
+
+print(f"\nCompleted e-commerce text identification.")
+print(f"Total batches processed: {len(ecommerce_batches)}")
+print(f"Total texts marked for removal: {total_removed}")
+print(f"Batches with no removals: 26-42")
 
 
 # Step 11: When all batches have been reviewed, call save_final_dataset() to finalize
 save_final_dataset()
 
 files.download("emotion_ecommerce_cleaned.csv")
-

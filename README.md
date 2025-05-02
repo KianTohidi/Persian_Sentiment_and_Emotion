@@ -17,9 +17,9 @@ Due to licensing restrictions, the CSV files are not included in this repository
 
 The codebase is organized in numerical order for reproducibility:
 
-1. `01_sentiment_dataset_cleaning.py`: Cleans and preprocesses the Persian sentiment dataset
-2. `02_emotion_dataset_cleaning_p1.py`: Cleans and preprocesses the Persian emotion dataset (Part 1)
-3. `03_emotion_dataset_cleaning_p2.py`: Cleans and preprocesses the Persian emotion dataset (Part 2)
+1. `01_sentiment_dataset_cleaning.py`: Cleans and preprocesses the Persian sentiment dataset + Visualizations
+2. `02_emotion_dataset_cleaning_p1.py`: Cleans and preprocesses the Persian emotion dataset (Part 1) + Visualizations
+3. `03_emotion_dataset_cleaning_p2.py`: Cleans and preprocesses the Persian emotion dataset (Part 2) + Visualizations
 4. `04_sentiment_dataset_sampling.py`: Samples and balances the Persian sentiment dataset
 5. `05_emotion_dataset_sampling.py`: Samples and balances the Persian emotion dataset
 
@@ -30,6 +30,8 @@ The codebase is organized in numerical order for reproducibility:
 - Python 3.11.12
 - Pandas (tested with version 2.2.2)
 - NumPy (tested with version 2.0.2)
+- Matplotlib (tested with version 3.10.0)
+- Seaborn (tested with version 0.13.2)
 
 ### Setup Instructions
 

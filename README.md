@@ -15,6 +15,11 @@ Due to licensing restrictions, the original CSV files are not included in this r
 - **Sample Files**: The `01_sentiment_csv_samples` folder contains:
   - A sample input CSV showing the required format before processing
   - A sample output CSV showing the expected structure after processing
+    
+- The `02_emotiont_csv_samples` folder contains:
+  - 2 samples input TSV showing the required format before processing
+  - A sample output CSV showing the expected structure after processing
+  
 
 These samples are provided to help researchers understand the data format for reproducing the study. Please download the actual datasets from the links provided in the Datasets section.
 

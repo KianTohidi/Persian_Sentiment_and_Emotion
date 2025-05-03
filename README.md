@@ -12,12 +12,11 @@ Due to licensing restrictions, the CSV files are not included in this repository
 ## Sample Data
 Due to licensing restrictions, the original CSV files are not included in this repository. However, I've created sample files to demonstrate the expected format for inputs and outputs:
 
-- **Sample Files**:
- 1. The `01_sentiment_csv_samples` folder contains:
+- **Sample Files**: The `01_sentiment_csv_samples` folder contains:
   - A sample input CSV showing the required format before processing
   - A sample output CSV showing the expected structure after processing
     
- 2. The `02_emotiont_csv_samples` folder contains:
+  The `02_emotiont_csv_samples` folder contains:
   - 2 samples input TSV showing the required format before processing
   - A sample output CSV showing the expected structure after processing
   

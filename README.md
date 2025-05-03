@@ -13,6 +13,15 @@ Due to licensing restrictions, the CSV files are not included in this repository
 - **Sentiment Dataset**: [Persian Sentiment Analysis Dataset on Kaggle](https://www.kaggle.com/datasets/instatext/persian-sentiment-analysis-dataset)
 - **Emotion Dataset**: [Arman Text Emotion Dataset on GitHub](https://github.com/Arman-Rayan-Sharif/arman-text-emotion)
 
+## Sample Data
+Due to licensing restrictions, the original CSV files are not included in this repository. However, I've created sample files to demonstrate the expected format for inputs and outputs:
+
+- **Sample Files**: The `01_sentiment_csv_samples` folder contains:
+  - A sample input CSV demonstrating the format required by the preprocessing scripts
+  - A sample output CSV showing the expected structure after processing
+
+These samples are provided to help researchers understand the data format for reproducing the study. Please download the actual datasets from the links provided in the Datasets section.
+
 ## Code Organization
 
 The codebase is organized in numerical order for reproducibility:

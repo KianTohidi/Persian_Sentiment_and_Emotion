@@ -33,12 +33,12 @@ The codebase is organized in numerical order for reproducibility:
 
 ## Getting Started
 ### Prerequisites
+- Google Colab (recommended environment)
 - Python 3.11.12
 - Pandas (tested with version 2.2.2)
 - NumPy (tested with version 2.0.2)
 - Matplotlib (tested with version 3.10.0)
 - Seaborn (tested with version 0.13.2)
-- Google Colab (recommended environment)
 
 ### Setup Instructions
 1. Clone this repository

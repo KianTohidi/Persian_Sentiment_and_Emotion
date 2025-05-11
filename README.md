@@ -34,7 +34,7 @@ The codebase is organized in numerical order for reproducibility:
 ## Getting Started
 ### Prerequisites
 - Google Colab (recommended environment)
-- Python 3.11.12
+- Python (tested with version 3.11.12)
 - Pandas (tested with version 2.2.2)
 - NumPy (tested with version 2.0.2)
 - Matplotlib (tested with version 3.10.0)

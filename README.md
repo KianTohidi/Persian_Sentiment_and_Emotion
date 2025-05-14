@@ -51,7 +51,7 @@ The codebase is organized in numerical order for reproducibility:
 To ensure reproducibility:
 1. Use Google Colab as your execution environment
 2. Follow the numerical order of the code files
-3. Read the comments in each file carefully, especially regarding data preparation
+3. Read the docstrings and comments in each file carefully, especially regarding data preparation
 4. Use the same Python and package versions listed in the dependencies
 
 ## License

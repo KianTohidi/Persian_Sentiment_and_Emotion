@@ -94,7 +94,7 @@ def load_datasets(file_paths: List[str] = INPUT_FILES) -> Optional[List[pd.DataF
     try:
         # Handle file upload in Colab
         logger.info(f"Prompting user to upload {', '.join(file_paths)}")
-        print(f"Please upload the Persian Emotion Detection dataset files ({', '.join(file_paths)}):")
+        print(f"Please upload the Armant Text Emotion dataset files ({', '.join(file_paths)}):")
         print("(Hold Ctrl key to select multiple files)")
         uploaded = files.upload()
         

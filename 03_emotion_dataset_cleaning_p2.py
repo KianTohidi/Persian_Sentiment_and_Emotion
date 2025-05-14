@@ -111,8 +111,8 @@ VIZ_SETTINGS = {
     'grid_alpha': 0.3
 }
 
+
 def load_dataset(file_path: str = INPUT_FILE) -> Optional[pd.DataFrame]:
-    
     """
     Load the previously cleaned emotion dataset.
     
@@ -182,8 +182,8 @@ def load_dataset(file_path: str = INPUT_FILE) -> Optional[pd.DataFrame]:
         print(f"Error: Failed to load dataset - {str(e)}")
         return None
 
+
 def initialize_dataset(df: pd.DataFrame) -> Tuple[pd.DataFrame, int]:
-    
     """
     Initialize the dataset for e-commerce detection processing.
     
@@ -220,8 +220,8 @@ def initialize_dataset(df: pd.DataFrame) -> Tuple[pd.DataFrame, int]:
     
     return df_init, total_batches
 
+
 def get_batch(df: pd.DataFrame, batch_number: int, batch_size: int = BATCH_SIZE) -> Tuple[str, pd.DataFrame]:
-    
     """
     Extract a batch of texts with sequential numbering for review.
     
@@ -262,8 +262,8 @@ def get_batch(df: pd.DataFrame, batch_number: int, batch_size: int = BATCH_SIZE)
     
     return batch_text, current_batch
 
+
 def mark_for_removal(df: pd.DataFrame, batch_num: int, flagged_numbers: List[int]) -> pd.DataFrame:
-    
     """
     Mark texts identified as e-commerce reviews for removal.
     
@@ -309,8 +309,8 @@ def mark_for_removal(df: pd.DataFrame, batch_num: int, flagged_numbers: List[int
     
     return df_updated
 
+
 def display_ecommerce_examples(df: pd.DataFrame, num_examples: int = 5) -> None:
-    
     """
     Display examples of e-commerce texts that will be removed.
     
@@ -356,7 +356,6 @@ def display_ecommerce_examples(df: pd.DataFrame, num_examples: int = 5) -> None:
 
 
 def process_all_batches(df: pd.DataFrame, batch_data: Dict[int, List[int]]) -> Tuple[pd.DataFrame, int]:
-    
     """
     Process all batches using pre-identified e-commerce entries.
     
@@ -409,8 +408,8 @@ def process_all_batches(df: pd.DataFrame, batch_data: Dict[int, List[int]]) -> T
     
     return df_processed, total_marked
 
+
 def visualize_emotion_distribution(df_before: pd.DataFrame, df_after: pd.DataFrame) -> None:
-    
     """
     Create visualization comparing emotion distribution before and after e-commerce removal.
     
@@ -477,7 +476,6 @@ def visualize_emotion_distribution(df_before: pd.DataFrame, df_after: pd.DataFra
     plt.show()
 
 def visualize_final_distribution(df: pd.DataFrame) -> None:
-    
     """
     Create professional visualization of the final emotion distribution.
     
@@ -561,8 +559,8 @@ def visualize_final_distribution(df: pd.DataFrame) -> None:
     plt.tight_layout()
     plt.show()
 
+
 def visualize_dataset_size_comparison(before_size: int, after_size: int) -> None:
-    
     """
     Visualize the dataset size before and after e-commerce review removal.
     
@@ -630,8 +628,8 @@ def visualize_dataset_size_comparison(before_size: int, after_size: int) -> None
     plt.tight_layout()
     plt.show()
 
+
 def save_final_dataset(df: pd.DataFrame, file_path: str = OUTPUT_FILE) -> Tuple[pd.DataFrame, int]:
-    
     """
     Remove all entries marked as e-commerce and save the final dataset.
     
@@ -687,8 +685,8 @@ def save_final_dataset(df: pd.DataFrame, file_path: str = OUTPUT_FILE) -> Tuple[
         print(f"Error: Failed to save dataset - {str(e)}")
         return final_df, removed_count
 
+
 def main() -> None:
-    
     """
     Main execution function for the e-commerce review removal pipeline.
     
@@ -705,9 +703,6 @@ def main() -> None:
     """
     
     logger.info("Starting Persian Emotion Dataset E-commerce Cleaning")
-    print("--------------------------------------------------")
-    print("PERSIAN EMOTION DATASET E-COMMERCE CLEANING")
-    print("--------------------------------------------------")
     
     # Step 1: Load the previously cleaned dataset
     df = load_dataset()
@@ -735,6 +730,7 @@ def main() -> None:
     logger.info("Persian Emotion Detection Dataset E-commerce Cleaning completed successfully")
     print("\nProcessing complete! The final cleaned dataset has been saved and downloaded.")
     print("Use emotion_ecommerce_cleaned.csv for your emotion analysis tasks.")
+
 
 if __name__ == "__main__":
     main()

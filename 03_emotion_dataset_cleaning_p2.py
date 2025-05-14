@@ -729,8 +729,6 @@ def main() -> None:
     # Final message
     logger.info("Persian Emotion Detection Dataset E-commerce Cleaning completed successfully")
     print("\nProcessing complete! The final cleaned dataset has been saved and downloaded.")
-    print("Use emotion_ecommerce_cleaned.csv for your emotion analysis tasks.")
-
 
 if __name__ == "__main__":
     main()

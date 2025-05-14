@@ -89,7 +89,7 @@ RANDOM_SEED = 42  # Fixed seed for reproducibility
 SAMPLE_SIZE = 300  # Default number of entries to sample from each sentiment class
 SENTIMENT_CLASSES = ['positive', 'neutral', 'negative']  # Expected sentiment classes in a consistent order
 
-# Checksum validation constants - update these after the first successful run
+# Checksum validation constants 
 # These will be MD5 hash strings rather than integer values
 EXPECTED_CREATION_CHECKSUM = "3ae7c9d128c73ee3a7eba539e1e2541a"
 EXPECTED_VERIFICATION_CHECKSUM = "804f187fefc3db0f0258a8637d1ecb94"

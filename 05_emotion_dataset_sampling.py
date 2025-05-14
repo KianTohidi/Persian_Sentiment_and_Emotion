@@ -8,9 +8,8 @@ Dependencies: pandas (tested with version 2.2.2), numpy (tested with version 2.0
 
 Purpose: The balanced dataset provides an unbiased analysis.
 This script takes the previously cleaned emotion dataset and creates a balanced version
-by sampling an equal number of entries from each emotion class (sadness, happiness, surprise, fear, hate, anger).
+by sampling an equal number of entries from each emotion class (anger, fear, happiness, hate, sadness, surprise).
 """
-
 
 # Step 1: Import required libraries
 import pandas as pd
@@ -57,7 +56,7 @@ sample_size = 300  # Number of entries to sample from each emotion class
 sampled_data = pd.DataFrame()
 
 # List of emotions to sample
-emotions = ['sadness', 'happiness', 'surprise', 'fear', 'hate', 'anger']
+emotions = ['anger', 'fear', 'happiness', 'hate', 'sadness', 'surprise']
 
 # Process each emotion category
 for emotion in emotions:

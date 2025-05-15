@@ -153,7 +153,6 @@ def test_api_connection() -> bool:
         logger.error(f"API test exception: {str(e)}")
         return False
 
-
 def batch_detect_emotions(texts: List[str], model_name: str = DEFAULT_MODEL, max_retries: int = 3) -> Dict[str, str]:
     start_time = time.time()
 
@@ -267,8 +266,6 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
                 return {}
 
     return {}
-
-
 
 def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataFrame:
     for encoding in ENCODING_OPTIONS:

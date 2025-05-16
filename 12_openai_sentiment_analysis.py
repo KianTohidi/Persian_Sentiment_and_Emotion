@@ -125,6 +125,12 @@ def get_api_key() -> str:
     return api_key
 
 def initialize_openai_api():
+    """
+    Initialize the OpenAI client with the API key.
+    
+    Returns:
+        OpenAI client object or None if initialization fails
+    """
     try:
         api_key = get_api_key()
         client = OpenAI(api_key=api_key)
@@ -135,12 +141,19 @@ def initialize_openai_api():
         return None
 
 def test_api_connection() -> bool:
+    """
+    Test the connection to OpenAI API with a simple request.
+    
+    Returns:
+        bool: True if connection successful, False otherwise
+    """
     logger.info("Testing OpenAI API connection...")
     try:
         client = initialize_openai_api()
         if not client:
             return False
             
+        # Send a simple test message to verify API connectivity
         response = client.chat.completions.create(
             model=DEFAULT_MODEL,
             messages=[
@@ -160,8 +173,20 @@ def test_api_connection() -> bool:
         return False
 
 def batch_detect_sentiments(texts: List[str], model_name: str = DEFAULT_MODEL, max_retries: int = 3) -> Dict[str, str]:
+    """
+    Detect sentiments in a batch of Persian texts using OpenAI API.
+    
+    Args:
+        texts: List of Persian text strings to analyze
+        model_name: OpenAI model to use
+        max_retries: Maximum number of retry attempts if API call fails
+        
+    Returns:
+        Dictionary mapping text IDs to detected sentiments
+    """
     start_time = time.time()
 
+    # Create a prompt that instructs the model to classify sentiments
     prompt = """
 You are a precise sentiment classifier for Persian text. You must classify each text into EXACTLY ONE of these three sentiments:
 - negative
@@ -178,9 +203,11 @@ Classify the sentiment in each of these Persian texts:
 
 """
 
+    # Add each text to the prompt with a numbered identifier
     for i, text in enumerate(texts):
         prompt += f"Text {i+1}: {text}\n\n"
 
+    # Add the expected response format to the prompt
     prompt += """
 Your response must be a valid JSON object with this exact format:
 {
@@ -195,6 +222,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
     retries = 0
     client = None
 
+    # Implement retry logic with exponential backoff for API reliability
     while retries <= max_retries:
         try:
             # Check if we need to reinitialize the API
@@ -208,6 +236,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
                     time.sleep(wait_time)
                     continue
 
+            # Make the API request with the sentiment classification prompt
             response = client.chat.completions.create(
                 model=model_name,
                 messages=[
@@ -218,6 +247,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
                 response_format={"type": "json_object"}
             )
 
+            # Check for valid response from API
             if not response or not hasattr(response, 'choices') or len(response.choices) == 0:
                 logger.error("Empty or invalid response from OpenAI API")
                 if retries < max_retries:
@@ -231,6 +261,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
 
             content = response.choices[0].message.content
 
+            # Parse the JSON response from the model
             try:
                 results = json.loads(content)
             except json.JSONDecodeError as e:
@@ -245,6 +276,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
                 else:
                     return {}
 
+            # Validate the sentiment results to ensure they match expected values
             validated_results = {}
             for text_id, sentiment in results.items():
                 if sentiment.lower() in VALID_SENTIMENTS:
@@ -260,6 +292,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
             elapsed_time = time.time() - start_time
             logger.error(f"× Error: {str(e)} (after {elapsed_time:.2f}s)")
 
+            # Implement exponential backoff for transient errors
             if retries < max_retries:
                 retries += 1
                 wait_time = 2 ** retries
@@ -272,6 +305,21 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
     return {}
 
 def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataFrame:
+    """
+    Attempt to read a CSV file with multiple encodings until successful.
+    
+    This function is particularly useful for Persian text which may be encoded differently.
+    
+    Args:
+        csv_content: CSV content as string or bytes
+        
+    Returns:
+        DataFrame with the CSV data
+        
+    Raises:
+        ValueError if no encoding works
+    """
+    # Try different encodings in order of likelihood for Persian text
     for encoding in ENCODING_OPTIONS:
         try:
             if isinstance(csv_content, bytes):
@@ -286,12 +334,27 @@ def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataF
     raise ValueError("Could not read CSV with any of the attempted encodings")
 
 def safe_save_dataframe(df: pd.DataFrame, filepath: str, temp_filepath: Optional[str] = None) -> bool:
+    """
+    Safely save a DataFrame to CSV using atomic file operations.
+    
+    This avoids data corruption if the program is interrupted during saving.
+    
+    Args:
+        df: DataFrame to save
+        filepath: Target file path
+        temp_filepath: Temporary file path (created if not provided)
+        
+    Returns:
+        True if save successful, False otherwise
+    """
     try:
+        # Use atomic write pattern: write to temp file then rename
         if temp_filepath is None:
             temp_filepath = f"{filepath}.tmp"
 
         df.to_csv(temp_filepath, index=False, encoding='utf-8-sig')
 
+        # Use os.replace for atomic operation
         os.replace(temp_filepath, filepath)
         return True
     except Exception as e:
@@ -304,9 +367,23 @@ def process_dataset_batched(
     batch_size: int = 20,
     max_samples: Optional[int] = None
 ) -> Optional[pd.DataFrame]:
+    """
+    Process the dataset in batches to prevent API rate limiting.
+    
+    Args:
+        csv_content: CSV content as string or bytes
+        output_path: Path to save results
+        batch_size: Number of texts to process in each API call
+        max_samples: Maximum number of samples to process (optional)
+        
+    Returns:
+        DataFrame with original data and predictions added
+    """
     try:
+        # Load the dataset with appropriate encoding
         df = read_csv_with_multiple_encodings(csv_content)
 
+        # Validate required columns
         if "text" not in df.columns:
             raise ValueError("No 'text' column found in CSV file. The dataset must contain a 'text' column.")
 
@@ -314,13 +391,16 @@ def process_dataset_batched(
             logger.warning("No 'sentiment' column found in CSV file. Adding placeholder values.")
             df['sentiment'] = "unknown"
 
+        # Sample the dataset if max_samples is specified
         if max_samples and max_samples < len(df):
             df = df.sample(max_samples, random_state=42)
             logger.info(f"Sampled {max_samples} rows from the dataset.")
 
+        # Initialize predicted_sentiment column if it doesn't exist
         if 'predicted_sentiment' not in df.columns:
             df['predicted_sentiment'] = None
 
+        # Only process rows that haven't been predicted yet
         unpredicted_df = df[df['predicted_sentiment'].isnull()].copy()
         total_to_process = len(unpredicted_df)
         processed_count = 0
@@ -329,13 +409,16 @@ def process_dataset_batched(
 
         overall_start = time.time()
 
+        # Process in batches with progress tracking via tqdm
         for i in tqdm(range(0, len(unpredicted_df), batch_size)):
             batch = unpredicted_df.iloc[i:min(i+batch_size, len(unpredicted_df))]
             if batch.empty:
                 continue
 
+            # Call the API to get sentiment predictions for this batch
             sentiment_results = batch_detect_sentiments(batch['text'].tolist())
 
+            # Update the main dataframe with predictions
             if sentiment_results:
                 for idx, row in batch.iterrows():
                     batch_position = batch.index.get_loc(idx) + 1
@@ -345,8 +428,10 @@ def process_dataset_batched(
                         df.at[idx, 'predicted_sentiment'] = sentiment_results[text_id]
                         processed_count += 1
 
+            # Save progress after each batch for fault tolerance
             safe_save_dataframe(df, output_path, OUTPUT_FILES['temp_results'])
 
+            # Calculate and log progress and estimated time remaining
             if processed_count > 0:
                 elapsed = time.time() - overall_start
                 avg_time_per_batch = elapsed / (i + min(batch_size, len(unpredicted_df) - i)) * batch_size
@@ -354,8 +439,10 @@ def process_dataset_batched(
                 est_remaining = avg_time_per_batch * remaining_batches
                 logger.info(f"Saved progress. Batch {i//batch_size + 1} complete. Estimated remaining time: {datetime.timedelta(seconds=int(est_remaining))}")
 
+            # Small delay to avoid overwhelming the API
             time.sleep(1)
 
+        # Log the final processing statistics
         total_time = time.time() - overall_start
         logger.info(f"Total processing time: {datetime.timedelta(seconds=int(total_time))}")
         logger.info(f"Processed {processed_count} out of {total_to_process} rows")
@@ -370,10 +457,21 @@ def process_dataset_batched(
         return None
 
 def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.DataFrame]]:
+    """
+    Evaluate model performance and generate visualizations and reports.
+    
+    Args:
+        df: DataFrame with true and predicted sentiments
+        
+    Returns:
+        Tuple of (accuracy, confusion matrix DataFrame)
+    """
+    # Validate that predictions exist before evaluation
     if df is None or df.empty or df['predicted_sentiment'].isna().all():
         logger.error("No predictions were made. Evaluation cannot proceed.")
         return None, None
 
+    # Filter to rows with valid sentiment predictions
     df_valid = df[df['predicted_sentiment'].isin(VALID_SENTIMENTS)]
 
     if len(df_valid) == 0:
@@ -381,27 +479,32 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
     try:
+        # Calculate overall accuracy
         accuracy = (df_valid['sentiment'] == df_valid['predicted_sentiment']).mean()
         logger.info(f"Overall accuracy: {accuracy:.4f}")
         print(f"Overall accuracy: {accuracy:.4f}")
 
+        # Generate classification report
         logger.info("\nClassification Report:")
         cr = classification_report(df_valid['sentiment'], df_valid['predicted_sentiment'], output_dict=True)
 
+        # Round values for better readability
         for sentiment in cr:
             if isinstance(cr[sentiment], dict):
                 for metric in cr[sentiment]:
                     if isinstance(cr[sentiment][metric], float):
                         cr[sentiment][metric] = round(cr[sentiment][metric], 2)
 
+        # Convert to DataFrame and print
         cr_df = pd.DataFrame(cr).transpose()
         with pd.option_context('display.float_format', '{:.2f}'.format):
             print(cr_df)
 
-
+        # Save classification report
         cr_df.to_csv(OUTPUT_FILES['report'])
         files.download(OUTPUT_FILES['report'])
 
+        # Generate confusion matrix
         cm = confusion_matrix(
             df_valid['sentiment'],
             df_valid['predicted_sentiment'],
@@ -411,9 +514,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         print("\nConfusion Matrix:")
         print(cm_df)
 
+        # Save confusion matrix as CSV
         cm_df.to_csv(OUTPUT_FILES['confusion'])
         files.download(OUTPUT_FILES['confusion'])
 
+        # Create confusion matrix heatmap visualization
         plt.figure(figsize=(10, 8))
         sns.heatmap(cm_df, annot=True, fmt="d", cmap="Blues", cbar=True)
         plt.title("Sentiment Classification Confusion Matrix")
@@ -423,6 +528,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         plt.savefig(OUTPUT_FILES['heatmap'], dpi=300, bbox_inches='tight')
         files.download(OUTPUT_FILES['heatmap'])
 
+        # Analyze commonly confused sentiment pairs
         mistakes = df_valid[df_valid['sentiment'] != df_valid['predicted_sentiment']]
         if len(mistakes) > 0:
             print("\nCommonly confused pairs:")
@@ -430,9 +536,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
             confusion_pairs = confusion_pairs.sort_values('count', ascending=False)
             print(confusion_pairs.head(10))
 
+            # Save confusion pairs analysis
             confusion_pairs.to_csv(OUTPUT_FILES['confusion_pairs'], index=False)
             files.download(OUTPUT_FILES['confusion_pairs'])
 
+        # Calculate per-sentiment accuracy metrics
         per_sentiment_accuracy = []
         print("\nPer-sentiment accuracy:")
         for sentiment in VALID_SENTIMENTS:
@@ -446,10 +554,12 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
                 })
                 print(f"{sentiment}: {sentiment_acc:.4f} (n={len(sentiment_subset)})")
 
+        # Save per-sentiment accuracy data
         per_sentiment_df = pd.DataFrame(per_sentiment_accuracy)
         per_sentiment_df.to_csv(OUTPUT_FILES['per_sentiment'], index=False)
         files.download(OUTPUT_FILES['per_sentiment'])
 
+        # Create bar chart of per-sentiment accuracy
         plt.figure(figsize=(10, 6))
         sns.barplot(x='sentiment', y='accuracy', hue='sentiment', data=per_sentiment_df,
             palette='viridis', legend=False)
@@ -473,16 +583,25 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
 def main():
+    """
+    Main execution function that orchestrates the entire sentiment analysis workflow:
+    1. Test API connection
+    2. Upload and process dataset
+    3. Evaluate and visualize results
+    """
+    # Step 1: Test API connection before proceeding
     if not test_api_connection():
         logger.error("Failed to connect to OpenAI API. Please check your API key and internet connection.")
         return
 
+    # Step 2: Upload the dataset file
     print("Please upload sentiment_balanced.csv file:")
     uploaded = files.upload()
 
     filename = list(uploaded.keys())[0]
     file_content = uploaded[filename]
 
+    # Step 3: Process the dataset in batches to get sentiment predictions
     results_df = process_dataset_batched(
         file_content,
         OUTPUT_FILES['results'],
@@ -490,13 +609,16 @@ def main():
         max_samples=None
     )
 
+    # Step 4: Download the main results file
     print("\nInitiating download for main results file...")
     files.download(OUTPUT_FILES['results'])
     print(f"Download link created for {OUTPUT_FILES['results']}")
 
+    # Step 5: Evaluate the results and generate visualizations if data is available
     if results_df is not None and not results_df.empty:
         accuracy, confusion = evaluate_results(results_df)
 
+        # Step 6: Summarize all result files created
         print("\nProcessing complete! All results have been saved and download links have been created.")
         print("Please check your downloads folder for the following files:")
         for file_type, file_name in OUTPUT_FILES.items():

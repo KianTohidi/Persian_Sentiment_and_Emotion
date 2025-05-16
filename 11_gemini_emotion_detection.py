@@ -125,6 +125,10 @@ def get_api_key() -> str:
     return api_key
 
 def initialize_gemini_api():
+    """
+    Initialize the Google Gemini API with the provided API key.
+    Returns success/failure status as boolean.
+    """
     try:
         api_key = get_api_key()
         genai.configure(api_key=api_key)
@@ -135,6 +139,10 @@ def initialize_gemini_api():
         return False
 
 def test_api_connection() -> bool:
+    """
+    Tests connection to the Google Gemini API by sending a simple prompt.
+    Essential step to verify API access before processing the dataset.
+    """
     logger.info("Testing Google Gemini API connection...")
     try:
         if not initialize_gemini_api():
@@ -154,8 +162,22 @@ def test_api_connection() -> bool:
         return False
 
 def batch_detect_emotions(texts: List[str], model_name: str = DEFAULT_MODEL, max_retries: int = 3) -> Dict[str, str]:
+    """
+    Core emotion detection function that sends Persian texts to Gemini API.
+    Uses a carefully crafted prompt to ensure consistent emotion classification.
+    Implements retry logic for API resilience.
+    
+    Args:
+        texts: List of Persian text samples to classify
+        model_name: Gemini model to use (default: gemini-2.0-flash)
+        max_retries: Number of retry attempts for API failures
+        
+    Returns:
+        Dictionary mapping text IDs to detected emotions
+    """
     start_time = time.time()
 
+    # Construct the prompt with clear instructions for the Gemini model
     prompt = """
 You are a precise emotion classifier for Persian text. You must classify each text into EXACTLY ONE of these six emotions:
 - anger
@@ -191,6 +213,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
 
     retries = 0
 
+    # Implement retry loop with exponential backoff
     while retries <= max_retries:
         try:
             # Check if we need to reinitialize the API
@@ -200,6 +223,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
             except:
                 initialize_gemini_api()
 
+            # Configure the model with zero temperature for deterministic outputs
             generation_config = {
                 "temperature": 0,
                 "max_output_tokens": 500,
@@ -227,6 +251,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
 
             content = response.text
 
+            # Parse JSON response and validate emotion labels
             try:
                 results = json.loads(content)
             except json.JSONDecodeError as e:
@@ -241,6 +266,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
                 else:
                     return {}
 
+            # Validate that each emotion is in our predefined list
             validated_results = {}
             for text_id, emotion in results.items():
                 if emotion.lower() in VALID_EMOTIONS:
@@ -268,6 +294,10 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
     return {}
 
 def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataFrame:
+    """
+    Attempts to read CSV with various encodings to handle Persian text correctly.
+    Persian text can have encoding issues, so this tries multiple encodings.
+    """
     for encoding in ENCODING_OPTIONS:
         try:
             if isinstance(csv_content, bytes):
@@ -282,6 +312,10 @@ def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataF
     raise ValueError("Could not read CSV with any of the attempted encodings")
 
 def safe_save_dataframe(df: pd.DataFrame, filepath: str, temp_filepath: Optional[str] = None) -> bool:
+    """
+    Safely saves DataFrame to CSV using atomic write operations.
+    This prevents data corruption if the process is interrupted during saving.
+    """
     try:
         if temp_filepath is None:
             temp_filepath = f"{filepath}.tmp"
@@ -300,7 +334,24 @@ def process_dataset_batched(
     batch_size: int = 20,
     max_samples: Optional[int] = None
 ) -> Optional[pd.DataFrame]:
+    """
+    Main processing pipeline that:
+    1. Reads the dataset
+    2. Processes texts in small batches to avoid API rate limits
+    3. Saves progress incrementally to prevent data loss
+    4. Provides progress updates and estimated completion time
+    
+    Args:
+        csv_content: CSV file content (either path or bytes)
+        output_path: Where to save results
+        batch_size: How many samples to process in each API call
+        max_samples: Optional limit on dataset size
+        
+    Returns:
+        DataFrame with original texts and predicted emotions
+    """
     try:
+        # Step 1: Read and validate the dataset
         df = read_csv_with_multiple_encodings(csv_content)
 
         if "text" not in df.columns:
@@ -314,9 +365,11 @@ def process_dataset_batched(
             df = df.sample(max_samples, random_state=42)
             logger.info(f"Sampled {max_samples} rows from the dataset.")
 
+        # Add predicted_emotion column if it doesn't exist
         if 'predicted_emotion' not in df.columns:
             df['predicted_emotion'] = None
 
+        # Step 2: Filter to get only rows that haven't been processed yet
         unpredicted_df = df[df['predicted_emotion'].isnull()].copy()
         total_to_process = len(unpredicted_df)
         processed_count = 0
@@ -325,11 +378,13 @@ def process_dataset_batched(
 
         overall_start = time.time()
 
+        # Step 3: Process in batches with progress tracking
         for i in tqdm(range(0, len(unpredicted_df), batch_size)):
             batch = unpredicted_df.iloc[i:min(i+batch_size, len(unpredicted_df))]
             if batch.empty:
                 continue
 
+            # Send batch to Gemini API for emotion detection
             emotion_results = batch_detect_emotions(batch['text'].tolist())
 
             if emotion_results:
@@ -341,8 +396,10 @@ def process_dataset_batched(
                         df.at[idx, 'predicted_emotion'] = emotion_results[text_id]
                         processed_count += 1
 
+            # Step 4: Save progress after each batch (checkpoint)
             safe_save_dataframe(df, output_path, OUTPUT_FILES['temp_results'])
 
+            # Calculate and display progress statistics
             if processed_count > 0:
                 elapsed = time.time() - overall_start
                 avg_time_per_batch = elapsed / (i + min(batch_size, len(unpredicted_df) - i)) * batch_size
@@ -350,8 +407,9 @@ def process_dataset_batched(
                 est_remaining = avg_time_per_batch * remaining_batches
                 logger.info(f"Saved progress. Batch {i//batch_size + 1} complete. Estimated remaining time: {datetime.timedelta(seconds=int(est_remaining))}")
 
-            time.sleep(1)
+            time.sleep(1)  # Small delay to avoid overloading the API
 
+        # Step 5: Summarize processing statistics
         total_time = time.time() - overall_start
         logger.info(f"Total processing time: {datetime.timedelta(seconds=int(total_time))}")
         logger.info(f"Processed {processed_count} out of {total_to_process} rows")
@@ -366,6 +424,21 @@ def process_dataset_batched(
         return None
 
 def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.DataFrame]]:
+    """
+    Comprehensive evaluation function that:
+    1. Calculates accuracy metrics
+    2. Generates classification reports
+    3. Creates confusion matrix
+    4. Produces visualizations
+    5. Analyzes error patterns
+    
+    Args:
+        df: DataFrame with true and predicted emotion labels
+        
+    Returns:
+        Tuple of (accuracy, confusion_matrix_df)
+    """
+    # Validate input data before evaluation
     if df is None or df.empty or df['predicted_emotion'].isna().all():
         logger.error("No predictions were made. Evaluation cannot proceed.")
         return None, None
@@ -377,13 +450,16 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
     try:
+        # Step 1: Calculate overall accuracy
         accuracy = (df_valid['emotion'] == df_valid['predicted_emotion']).mean()
         logger.info(f"Overall accuracy: {accuracy:.4f}")
         print(f"Overall accuracy: {accuracy:.4f}")
 
+        # Step 2: Generate detailed classification report
         logger.info("\nClassification Report:")
         cr = classification_report(df_valid['emotion'], df_valid['predicted_emotion'], output_dict=True)
 
+        # Round metrics to 2 decimal places for readability
         for emotion in cr:
             if isinstance(cr[emotion], dict):
                 for metric in cr[emotion]:
@@ -394,10 +470,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         with pd.option_context('display.float_format', '{:.2f}'.format):
             print(cr_df)
 
-
+        # Save classification report
         cr_df.to_csv(OUTPUT_FILES['report'])
         files.download(OUTPUT_FILES['report'])
 
+        # Step 3: Generate confusion matrix
         cm = confusion_matrix(
             df_valid['emotion'],
             df_valid['predicted_emotion'],
@@ -407,9 +484,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         print("\nConfusion Matrix:")
         print(cm_df)
 
+        # Save confusion matrix
         cm_df.to_csv(OUTPUT_FILES['confusion'])
         files.download(OUTPUT_FILES['confusion'])
 
+        # Step 4: Create heatmap visualization of confusion matrix
         plt.figure(figsize=(10, 8))
         sns.heatmap(cm_df, annot=True, fmt="d", cmap="Blues", cbar=True)
         plt.title("Emotion Classification Confusion Matrix")
@@ -419,6 +498,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         plt.savefig(OUTPUT_FILES['heatmap'], dpi=300, bbox_inches='tight')
         files.download(OUTPUT_FILES['heatmap'])
 
+        # Step 5: Analyze common misclassification patterns
         mistakes = df_valid[df_valid['emotion'] != df_valid['predicted_emotion']]
         if len(mistakes) > 0:
             print("\nCommonly confused pairs:")
@@ -429,6 +509,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
             confusion_pairs.to_csv(OUTPUT_FILES['confusion_pairs'], index=False)
             files.download(OUTPUT_FILES['confusion_pairs'])
 
+        # Step 6: Calculate and visualize per-emotion accuracy
         per_emotion_accuracy = []
         print("\nPer-emotion accuracy:")
         for emotion in VALID_EMOTIONS:
@@ -446,6 +527,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         per_emotion_df.to_csv(OUTPUT_FILES['per_emotion'], index=False)
         files.download(OUTPUT_FILES['per_emotion'])
 
+        # Create bar chart of per-emotion accuracy
         plt.figure(figsize=(10, 6))
         sns.barplot(x='emotion', y='accuracy', hue='emotion', data=per_emotion_df,
             palette='viridis', legend=False)
@@ -469,16 +551,26 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
 def main():
+    """
+    Main function that orchestrates the entire pipeline:
+    1. Tests API connection
+    2. Handles file upload
+    3. Processes the dataset
+    4. Evaluates and visualizes results
+    """
+    # Step 1: Verify API connection before starting
     if not test_api_connection():
         logger.error("Failed to connect to Google Gemini API. Please check your API key and internet connection.")
         return
 
+    # Step 2: Upload the dataset file
     print("Please upload emotion_balanced.csv file:")
     uploaded = files.upload()
 
     filename = list(uploaded.keys())[0]
     file_content = uploaded[filename]
 
+    # Step 3: Process the dataset and get results
     results_df = process_dataset_batched(
         file_content,
         OUTPUT_FILES['results'],
@@ -486,13 +578,16 @@ def main():
         max_samples=None
     )
 
+    # Download the complete results file
     print("\nInitiating download for main results file...")
     files.download(OUTPUT_FILES['results'])
     print(f"Download link created for {OUTPUT_FILES['results']}")
 
+    # Step 4: Evaluate and visualize if we have results
     if results_df is not None and not results_df.empty:
         accuracy, confusion = evaluate_results(results_df)
 
+        # Step 5: Summarize the process completion
         print("\nProcessing complete! All results have been saved and download links have been created.")
         print("Please check your downloads folder for the following files:")
         for file_type, file_name in OUTPUT_FILES.items():
@@ -502,5 +597,6 @@ def main():
     else:
         print("No results to evaluate. Please check for errors above.")
 
+# Entry point of the script
 if __name__ == "__main__":
     main()

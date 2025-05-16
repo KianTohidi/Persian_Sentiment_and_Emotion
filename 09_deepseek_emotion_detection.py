@@ -101,6 +101,7 @@ def test_api_connection() -> bool:
             "Content-Type": "application/json"
         }
 
+        # Send a simple test request to verify API connectivity
         test_payload = {
             "model": DEFAULT_MODEL,
             "messages": [
@@ -139,6 +140,7 @@ def batch_detect_emotions(texts: List[str], model: str = DEFAULT_MODEL, max_retr
     """
     start_time = time.time()
 
+    # Create a structured prompt that instructs the LLM to identify emotions
     prompt = """
 You are a precise emotion classifier for Persian text. You must classify each text into EXACTLY ONE of these six emotions:
 - anger
@@ -158,9 +160,11 @@ Classify the emotion in each of these Persian texts:
 
 """
 
+    # Add each text to the prompt with numbering for identification
     for i, text in enumerate(texts):
         prompt += f"Text {i+1}: {text}\n\n"
 
+    # Add format instructions for the JSON response structure
     prompt += """
 Your response must be a valid JSON object with this exact format:
 {
@@ -174,6 +178,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
 
     retries = 0
 
+    # Implement retry logic for robustness against API failures
     while retries <= max_retries:
         try:
             api_key = get_api_key()
@@ -183,19 +188,21 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
                 "Content-Type": "application/json"
             }
 
+            # Configure API request with forced JSON output for consistent parsing
             payload = {
                 "model": model,
                 "messages": [
                     {"role": "system", "content": "You analyze emotions in Persian texts and return results in JSON format."},
                     {"role": "user", "content": prompt}
                 ],
-                "temperature": 0,
+                "temperature": 0,  # Set to 0 for deterministic output
                 "max_tokens": 500,
-                "response_format": {"type": "json_object"}
+                "response_format": {"type": "json_object"}  # Force JSON response
             }
 
             response = requests.post(DEEPSEEK_API_URL, headers=headers, json=payload)
 
+            # Handle HTTP errors from the API
             if response.status_code != 200:
                 error_message = f"API Error: Status code {response.status_code}"
                 logger.error(error_message)
@@ -203,7 +210,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
     
                 if retries < max_retries:
                     retries += 1
-                    wait_time = 2 ** retries
+                    wait_time = 2 ** retries  # Exponential backoff
                     logger.info(f"Retrying in {wait_time} seconds... (Attempt {retries}/{max_retries})")
                     time.sleep(wait_time)
                     continue
@@ -212,6 +219,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
 
             response_data = response.json()
 
+            # Extract the response content from DeepSeek's API structure
             if "choices" in response_data and len(response_data["choices"]) > 0:
                 content = response_data["choices"][0].get("message", {}).get("content", "{}")
 
@@ -242,6 +250,7 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
                 else:
                     return {}
 
+            # Validate that all emotions are in our accepted list and normalize to lowercase
             validated_results = {}
             for text_id, emotion in results.items():
                 if emotion.lower() in VALID_EMOTIONS:
@@ -281,6 +290,7 @@ def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataF
     Raises:
         ValueError: If no encoding could successfully read the CSV
     """
+    # Try each encoding in sequence until one works
     for encoding in ENCODING_OPTIONS:
         try:
             if isinstance(csv_content, bytes):
@@ -310,8 +320,10 @@ def safe_save_dataframe(df: pd.DataFrame, filepath: str, temp_filepath: Optional
         if temp_filepath is None:
             temp_filepath = f"{filepath}.tmp"
 
+        # First write to a temporary file to avoid corrupting the destination
         df.to_csv(temp_filepath, index=False, encoding='utf-8-sig')
 
+        # Atomic file replacement to ensure data integrity
         os.replace(temp_filepath, filepath)
         return True
     except Exception as e:
@@ -337,8 +349,10 @@ def process_dataset_batched(
         DataFrame with the processed results, or None on failure
     """
     try:
+        # Load the dataset with support for different encodings
         df = read_csv_with_multiple_encodings(csv_content)
 
+        # Validate required columns exist in the dataset
         if "text" not in df.columns:
             raise ValueError("No 'text' column found in CSV file. The dataset must contain a 'text' column.")
 
@@ -346,13 +360,16 @@ def process_dataset_batched(
             logger.warning("No 'emotion' column found in CSV file. Adding placeholder values.")
             df['emotion'] = "unknown"
 
+        # Apply sampling if requested (for testing or limiting API calls)
         if max_samples and max_samples < len(df):
             df = df.sample(max_samples, random_state=42)
             logger.info(f"Sampled {max_samples} rows from the dataset.")
 
+        # Add prediction column if it doesn't exist
         if 'predicted_emotion' not in df.columns:
             df['predicted_emotion'] = None
 
+        # Filter to only process rows that don't have predictions yet
         unpredicted_df = df[df['predicted_emotion'].isnull()].copy()
         total_to_process = len(unpredicted_df)
         processed_count = 0
@@ -361,11 +378,13 @@ def process_dataset_batched(
 
         overall_start = time.time()
 
+        # Process in batches to optimize API calls and enable progress saving
         for i in tqdm(range(0, len(unpredicted_df), batch_size)):
             batch = unpredicted_df.iloc[i:min(i+batch_size, len(unpredicted_df))]
             if batch.empty:
                 continue
 
+            # Call the emotion detection API for this batch
             emotion_results = batch_detect_emotions(batch['text'].tolist())
 
             if emotion_results:
@@ -377,16 +396,18 @@ def process_dataset_batched(
                         df.at[idx, 'predicted_emotion'] = emotion_results[text_id]
                         processed_count += 1
 
+            # Save progress after each batch for resumability
             safe_save_dataframe(df, output_path, OUTPUT_FILES['temp_results'])
 
             if processed_count > 0:
+                # Display estimated time remaining based on current progress
                 elapsed = time.time() - overall_start
                 avg_time_per_batch = elapsed / (i + min(batch_size, len(unpredicted_df) - i)) * batch_size
                 remaining_batches = (total_to_process - processed_count) / batch_size
                 est_remaining = avg_time_per_batch * remaining_batches
                 logger.info(f"Saved progress. Batch {i//batch_size + 1} complete. Estimated remaining time: {datetime.timedelta(seconds=int(est_remaining))}")
 
-            time.sleep(1)
+            time.sleep(1)  # Brief pause to avoid API rate limits
 
         total_time = time.time() - overall_start
         logger.info(f"Total processing time: {datetime.timedelta(seconds=int(total_time))}")
@@ -415,6 +436,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         logger.error("No predictions were made. Evaluation cannot proceed.")
         return None, None
 
+    # Filter to only include valid emotion predictions
     df_valid = df[df['predicted_emotion'].isin(VALID_EMOTIONS)]
 
     if len(df_valid) == 0:
@@ -422,13 +444,16 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
     try:
+        # Calculate and report overall accuracy
         accuracy = (df_valid['emotion'] == df_valid['predicted_emotion']).mean()
         logger.info(f"Overall accuracy: {accuracy:.4f}")
         print(f"Overall accuracy: {accuracy:.4f}")
 
+        # Generate detailed classification report with precision, recall, and F1-score
         logger.info("\nClassification Report:")
         cr = classification_report(df_valid['emotion'], df_valid['predicted_emotion'], output_dict=True)
 
+        # Round values for better readability
         for emotion in cr:
             if isinstance(cr[emotion], dict):
                 for metric in cr[emotion]:
@@ -439,9 +464,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         with pd.option_context('display.float_format', '{:.2f}'.format):
             print(cr_df)
 
+        # Save classification report to file and enable download
         cr_df.to_csv(OUTPUT_FILES['report'])
         files.download(OUTPUT_FILES['report'])
 
+        # Generate confusion matrix to visualize prediction patterns
         cm = confusion_matrix(
             df_valid['emotion'],
             df_valid['predicted_emotion'],
@@ -451,9 +478,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         print("\nConfusion Matrix:")
         print(cm_df)
 
+        # Save confusion matrix to file and enable download
         cm_df.to_csv(OUTPUT_FILES['confusion'])
         files.download(OUTPUT_FILES['confusion'])
 
+        # Create visual heatmap of confusion matrix
         plt.figure(figsize=(10, 8))
         sns.heatmap(cm_df, annot=True, fmt="d", cmap="Blues", cbar=True)
         plt.title("Emotion Classification Confusion Matrix")
@@ -463,6 +492,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         plt.savefig(OUTPUT_FILES['heatmap'], dpi=300, bbox_inches='tight')
         files.download(OUTPUT_FILES['heatmap'])
 
+        # Analyze common misclassifications to identify patterns
         mistakes = df_valid[df_valid['emotion'] != df_valid['predicted_emotion']]
         if len(mistakes) > 0:
             print("\nCommonly confused pairs:")
@@ -473,6 +503,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
             confusion_pairs.to_csv(OUTPUT_FILES['confusion_pairs'], index=False)
             files.download(OUTPUT_FILES['confusion_pairs'])
 
+        # Calculate and visualize per-emotion accuracy
         per_emotion_accuracy = []
         print("\nPer-emotion accuracy:")
         for emotion in VALID_EMOTIONS:
@@ -490,6 +521,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         per_emotion_df.to_csv(OUTPUT_FILES['per_emotion'], index=False)
         files.download(OUTPUT_FILES['per_emotion'])
 
+        # Create bar chart of per-emotion accuracy
         plt.figure(figsize=(10, 6))
         sns.barplot(x='emotion', y='accuracy', hue='emotion', data=per_emotion_df,
             palette='viridis', legend=False)
@@ -514,16 +546,19 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
 
 def main():
     """Main function to run the emotion detection pipeline."""
+    # First validate API connectivity before proceeding
     if not test_api_connection():
         logger.error("Failed to connect to DeepSeek API. Please check your API key and internet connection.")
         return
 
+    # Request user to upload the dataset file through Colab interface
     print("Please upload emotion_balanced.csv file:")
     uploaded = files.upload()
 
     filename = list(uploaded.keys())[0]
     file_content = uploaded[filename]
 
+    # Process the dataset in batches with progress tracking and saving
     results_df = process_dataset_batched(
         file_content,
         OUTPUT_FILES['results'],
@@ -531,13 +566,16 @@ def main():
         max_samples=None
     )
 
+    # Enable download of the complete results file
     print("\nInitiating download for main results file...")
     files.download(OUTPUT_FILES['results'])
     print(f"Download link created for {OUTPUT_FILES['results']}")
 
+    # Run evaluation metrics and visualizations if processing was successful
     if results_df is not None and not results_df.empty:
         accuracy, confusion = evaluate_results(results_df)
 
+        # Summarize the outputs for the user
         print("\nProcessing complete! All results have been saved and download links have been created.")
         print("Please check your downloads folder for the following files:")
         for file_type, file_name in OUTPUT_FILES.items():
@@ -549,3 +587,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# TODO: Future improvements:
+# 1. Adapt code to work in non-Colab environments while maintaining simplicity
+# 2. Add more customization options for visualizations

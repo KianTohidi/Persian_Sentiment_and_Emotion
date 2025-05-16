@@ -124,6 +124,12 @@ def get_api_key() -> str:
     return api_key
 
 def test_api_connection() -> bool:
+    """
+    Test the connection to the DeepSeek API with a simple query.
+    
+    Returns:
+        bool: True if connection successful, False otherwise
+    """
     logger.info("Testing DeepSeek API connection...")
     try:
         api_key = get_api_key()
@@ -133,6 +139,7 @@ def test_api_connection() -> bool:
             "Authorization": f"Bearer {api_key}"
         }
         
+        # Send a minimal test query to verify API functionality
         payload = {
             "model": DEFAULT_MODEL,
             "messages": [
@@ -161,8 +168,21 @@ def test_api_connection() -> bool:
         return False
 
 def batch_detect_sentiments(texts: List[str], model_name: str = DEFAULT_MODEL, max_retries: int = 3) -> Dict[str, str]:
+    """
+    Process a batch of Persian texts and detect their sentiments using the DeepSeek API.
+    
+    Args:
+        texts: List of Persian text strings to analyze
+        model_name: DeepSeek model to use (default is deepseek-chat)
+        max_retries: Maximum number of retry attempts on failure
+        
+    Returns:
+        Dictionary mapping text IDs to sentiment labels
+    """
     start_time = time.time()
 
+    # Construct a prompt that instructs the model to classify sentiments
+    # The strict format ensures consistent and parseable outputs
     prompt = """
 You are a precise sentiment classifier for Persian text. You must classify each text into EXACTLY ONE of these three sentiments:
 - negative
@@ -201,6 +221,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
         "Authorization": f"Bearer {api_key}"
     }
 
+    # Implement exponential backoff retry strategy for API reliability
     while retries <= max_retries:
         try:
             payload = {
@@ -240,6 +261,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
             
             content = response_data['choices'][0]['message'].get('content', '')
 
+            # Parse and validate the JSON response
             try:
                 results = json.loads(content)
             except json.JSONDecodeError as e:
@@ -254,6 +276,7 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
                 else:
                     return {}
 
+            # Validate that all returned sentiments are among the allowed values
             validated_results = {}
             for text_id, sentiment in results.items():
                 if sentiment.lower() in VALID_SENTIMENTS:
@@ -281,6 +304,21 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
     return {}
 
 def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataFrame:
+    """
+    Try to read a CSV file with multiple encodings until one succeeds.
+    
+    Persian text can be encoded in various ways depending on the source system.
+    This function attempts multiple encodings to ensure proper character rendering.
+    
+    Args:
+        csv_content: CSV content as string or bytes
+        
+    Returns:
+        DataFrame with the loaded CSV data
+        
+    Raises:
+        ValueError: If none of the encodings work
+    """
     for encoding in ENCODING_OPTIONS:
         try:
             if isinstance(csv_content, bytes):
@@ -295,12 +333,27 @@ def read_csv_with_multiple_encodings(csv_content: Union[str, bytes]) -> pd.DataF
     raise ValueError("Could not read CSV with any of the attempted encodings")
 
 def safe_save_dataframe(df: pd.DataFrame, filepath: str, temp_filepath: Optional[str] = None) -> bool:
+    """
+    Save a DataFrame to disk using atomic file operations to prevent data corruption.
+    
+    This function uses a write-to-temp-then-rename strategy which ensures that
+    if the process crashes during saving, the original file remains intact.
+    
+    Args:
+        df: DataFrame to save
+        filepath: Target file path
+        temp_filepath: Temporary file path (default is filepath + .tmp)
+        
+    Returns:
+        True if saved successfully, False otherwise
+    """
     try:
         if temp_filepath is None:
             temp_filepath = f"{filepath}.tmp"
 
         df.to_csv(temp_filepath, index=False, encoding='utf-8-sig')
 
+        # Using os.replace for atomic file operations
         os.replace(temp_filepath, filepath)
         return True
     except Exception as e:
@@ -313,9 +366,23 @@ def process_dataset_batched(
     batch_size: int = 20,
     max_samples: Optional[int] = None
 ) -> Optional[pd.DataFrame]:
+    """
+    Process a dataset in batches, analyzing sentiment for each text.
+    
+    Args:
+        csv_content: CSV content to process
+        output_path: Path to save results
+        batch_size: Number of texts to process per API call
+        max_samples: Maximum number of rows to process (None = all)
+        
+    Returns:
+        DataFrame with original texts and predicted sentiments
+    """
     try:
+        # Load and prepare the dataset
         df = read_csv_with_multiple_encodings(csv_content)
 
+        # Validate required columns exist
         if "text" not in df.columns:
             raise ValueError("No 'text' column found in CSV file. The dataset must contain a 'text' column.")
 
@@ -323,13 +390,16 @@ def process_dataset_batched(
             logger.warning("No 'sentiment' column found in CSV file. Adding placeholder values.")
             df['sentiment'] = "unknown"
 
+        # Sample the dataset if requested
         if max_samples and max_samples < len(df):
             df = df.sample(max_samples, random_state=42)
             logger.info(f"Sampled {max_samples} rows from the dataset.")
 
+        # Initialize prediction column if it doesn't exist
         if 'predicted_sentiment' not in df.columns:
             df['predicted_sentiment'] = None
 
+        # Find rows that need prediction (where predicted_sentiment is null)
         unpredicted_df = df[df['predicted_sentiment'].isnull()].copy()
         total_to_process = len(unpredicted_df)
         processed_count = 0
@@ -338,13 +408,16 @@ def process_dataset_batched(
 
         overall_start = time.time()
 
+        # Process the dataset in batches to optimize API usage and handle large datasets
         for i in tqdm(range(0, len(unpredicted_df), batch_size)):
             batch = unpredicted_df.iloc[i:min(i+batch_size, len(unpredicted_df))]
             if batch.empty:
                 continue
 
+            # Get sentiment predictions for the current batch
             sentiment_results = batch_detect_sentiments(batch['text'].tolist())
 
+            # Update the main dataframe with the predictions
             if sentiment_results:
                 for idx, row in batch.iterrows():
                     batch_position = batch.index.get_loc(idx) + 1
@@ -354,8 +427,10 @@ def process_dataset_batched(
                         df.at[idx, 'predicted_sentiment'] = sentiment_results[text_id]
                         processed_count += 1
 
+            # Save progress after each batch to enable resuming if interrupted
             safe_save_dataframe(df, output_path, OUTPUT_FILES['temp_results'])
 
+            # Calculate and display progress information
             if processed_count > 0:
                 elapsed = time.time() - overall_start
                 avg_time_per_batch = elapsed / (i + min(batch_size, len(unpredicted_df) - i)) * batch_size
@@ -363,8 +438,10 @@ def process_dataset_batched(
                 est_remaining = avg_time_per_batch * remaining_batches
                 logger.info(f"Saved progress. Batch {i//batch_size + 1} complete. Estimated remaining time: {datetime.timedelta(seconds=int(est_remaining))}")
 
+            # Add a small delay between batches to avoid API rate limits
             time.sleep(1)
 
+        # Log completion statistics
         total_time = time.time() - overall_start
         logger.info(f"Total processing time: {datetime.timedelta(seconds=int(total_time))}")
         logger.info(f"Processed {processed_count} out of {total_to_process} rows")
@@ -379,10 +456,29 @@ def process_dataset_batched(
         return None
 
 def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.DataFrame]]:
+    """
+    Evaluate sentiment analysis results and generate performance metrics.
+    
+    This function creates multiple evaluation outputs:
+    1. Overall accuracy metrics
+    2. Per-class classification report
+    3. Confusion matrix
+    4. Visual heatmap of confusion matrix
+    5. Analysis of commonly confused sentiment pairs
+    6. Per-sentiment accuracy metrics
+    
+    Args:
+        df: DataFrame with actual and predicted sentiments
+        
+    Returns:
+        Tuple of (accuracy, confusion_matrix_dataframe)
+    """
+    # Check if there are valid predictions to evaluate
     if df is None or df.empty or df['predicted_sentiment'].isna().all():
         logger.error("No predictions were made. Evaluation cannot proceed.")
         return None, None
 
+    # Filter to rows with valid sentiment predictions
     df_valid = df[df['predicted_sentiment'].isin(VALID_SENTIMENTS)]
 
     if len(df_valid) == 0:
@@ -390,13 +486,16 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
     try:
+        # Calculate and display overall accuracy
         accuracy = (df_valid['sentiment'] == df_valid['predicted_sentiment']).mean()
         logger.info(f"Overall accuracy: {accuracy:.4f}")
         print(f"Overall accuracy: {accuracy:.4f}")
 
+        # Generate and save detailed classification report
         logger.info("\nClassification Report:")
         cr = classification_report(df_valid['sentiment'], df_valid['predicted_sentiment'], output_dict=True)
 
+        # Round values in classification report for readability
         for sentiment in cr:
             if isinstance(cr[sentiment], dict):
                 for metric in cr[sentiment]:
@@ -407,10 +506,11 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         with pd.option_context('display.float_format', '{:.2f}'.format):
             print(cr_df)
 
-
+        # Save classification report and make available for download
         cr_df.to_csv(OUTPUT_FILES['report'])
         files.download(OUTPUT_FILES['report'])
 
+        # Create and save confusion matrix
         cm = confusion_matrix(
             df_valid['sentiment'],
             df_valid['predicted_sentiment'],
@@ -423,6 +523,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         cm_df.to_csv(OUTPUT_FILES['confusion'])
         files.download(OUTPUT_FILES['confusion'])
 
+        # Create and save visual heatmap of confusion matrix
         plt.figure(figsize=(10, 8))
         sns.heatmap(cm_df, annot=True, fmt="d", cmap="Blues", cbar=True)
         plt.title("Sentiment Classification Confusion Matrix")
@@ -432,6 +533,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         plt.savefig(OUTPUT_FILES['heatmap'], dpi=300, bbox_inches='tight')
         files.download(OUTPUT_FILES['heatmap'])
 
+        # Analyze common mistake patterns by identifying frequently confused pairs
         mistakes = df_valid[df_valid['sentiment'] != df_valid['predicted_sentiment']]
         if len(mistakes) > 0:
             print("\nCommonly confused pairs:")
@@ -442,6 +544,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
             confusion_pairs.to_csv(OUTPUT_FILES['confusion_pairs'], index=False)
             files.download(OUTPUT_FILES['confusion_pairs'])
 
+        # Calculate and visualize per-sentiment accuracy
         per_sentiment_accuracy = []
         print("\nPer-sentiment accuracy:")
         for sentiment in VALID_SENTIMENTS:
@@ -459,6 +562,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         per_sentiment_df.to_csv(OUTPUT_FILES['per_sentiment'], index=False)
         files.download(OUTPUT_FILES['per_sentiment'])
 
+        # Create bar chart visualization of per-sentiment accuracy
         plt.figure(figsize=(10, 6))
         sns.barplot(x='sentiment', y='accuracy', hue='sentiment', data=per_sentiment_df,
             palette='viridis', legend=False)
@@ -471,6 +575,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         plt.savefig('DeepSeek_sentiment_accuracy_chart.png', dpi=300, bbox_inches='tight')
         files.download('DeepSeek_sentiment_accuracy_chart.png')
 
+        # Notify user about generated download files
         print("\nInitiating downloads for evaluation results...")
         print(f"Download links created for evaluation files")
 
@@ -482,16 +587,28 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         return None, None
 
 def main():
+    """
+    Main execution function that orchestrates the entire sentiment analysis process.
+    
+    The workflow consists of four main steps:
+    1. Verify API connection
+    2. Load dataset from user upload
+    3. Process dataset in batches
+    4. Evaluate and visualize results
+    """
+    # Step 1: Test API connection before proceeding
     if not test_api_connection():
         logger.error("Failed to connect to DeepSeek API. Please check your API key and internet connection.")
         return
 
+    # Step 2: Request user to upload dataset file
     print("Please upload sentiment_balanced.csv file:")
     uploaded = files.upload()
 
     filename = list(uploaded.keys())[0]
     file_content = uploaded[filename]
 
+    # Step 3: Process the dataset in batches
     results_df = process_dataset_batched(
         file_content,
         OUTPUT_FILES['results'],
@@ -499,13 +616,16 @@ def main():
         max_samples=None
     )
 
+    # Make the main results file available for download
     print("\nInitiating download for main results file...")
     files.download(OUTPUT_FILES['results'])
     print(f"Download link created for {OUTPUT_FILES['results']}")
 
+    # Step 4: Evaluate results and generate reports if processing was successful
     if results_df is not None and not results_df.empty:
         accuracy, confusion = evaluate_results(results_df)
 
+        # Summarize completed tasks and available outputs
         print("\nProcessing complete! All results have been saved and download links have been created.")
         print("Please check your downloads folder for the following files:")
         for file_type, file_name in OUTPUT_FILES.items():
@@ -515,5 +635,10 @@ def main():
     else:
         print("No results to evaluate. Please check for errors above.")
 
+# Execute the main function when the script is run directly
 if __name__ == "__main__":
     main()
+
+# TODO: Future improvements:
+# 1. Adapt code to work in non-Colab environments while maintaining simplicity
+# 2. Add more customization options for visualizations

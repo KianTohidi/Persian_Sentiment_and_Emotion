@@ -591,3 +591,7 @@ def main():
 # Entry point when script is executed directly
 if __name__ == "__main__":
     main()
+
+# TODO: Future improvements:
+# 1. Adapt code to work in non-Colab environments while maintaining simplicity
+# 2. Add more customization options for visualizations

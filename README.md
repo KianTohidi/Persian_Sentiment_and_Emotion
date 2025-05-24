@@ -33,21 +33,21 @@ The codebase is organized in numerical order for reproducibility:
 
 ### AI Model Implementations:
 
-#### Claude:
+#### Claude 3.7 Sonnet:
 6. `06_claude_sentiment_analysis.py`: Implementation of sentiment analysis using Claude
 7. `07_claude_emotion_detection.py`: Implementation of emotion detection using Claude
 
-#### DeepSeek:
+#### DeepSeek-V3:
 8. `08_deepseek_sentiment_analysis.py`: Implementation of sentiment analysis using DeepSeek
 9. `09_deepseek_emotion_detection.py`: Implementation of emotion detection using DeepSeek
 
-#### Gemini:
+#### Gemini 2.0 Flash:
 10. `10_gemini_sentiment_analysis.py`: Implementation of sentiment analysis using Gemini
 11. `11_gemini_emotion_detection.py`: Implementation of emotion detection using Gemini
 
-#### OpenAI:
-12. `12_openai_sentiment_analysis.py`: Implementation of sentiment analysis using OpenAI
-13. `13_openai_emotion_detection.py`: Implementation of emotion detection using OpenAI
+#### GPT-4o:
+12. `12_gpt4o_sentiment_analysis.py`: Implementation of sentiment analysis using OpenAI
+13. `13_gpt4o_emotion_detection.py`: Implementation of emotion detection using OpenAI
 
 ## Getting Started
 ### Prerequisites

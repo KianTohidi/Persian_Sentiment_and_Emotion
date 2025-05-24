@@ -62,7 +62,7 @@ logger = logging.getLogger(__name__)
 # Constants
 # API key should be loaded from environment variable or config file
 # NEVER hardcode credentials in source code
-API_KEY_ENV_VAR = "CLAUDE_API_KEY"
+API_KEY_ENV_VAR = "ANTHROPIC_API_KEY"
 DEFAULT_MODEL = "claude-3-7-sonnet-20250219"  # Claude 3.7 Sonnet model identifier
 VALID_SENTIMENTS = ['negative', 'neutral', 'positive']
 # Multiple encodings to try, in order of preference, for handling Persian text
@@ -97,7 +97,7 @@ def get_api_key() -> str:
     # OPTION 1: RECOMMENDED - Using Colab Secrets (Secure & Persistent)
     #    - Click the 🔑 key icon in the left sidebar
     #    - Click "Add new secret"
-    #    - For name: enter CLAUDE_API_KEY
+    #    - For name: enter ANTHROPIC_API_KEY
     #    - For value: paste your actual API key
     #    - Click "Save"
     #
@@ -113,7 +113,7 @@ def get_api_key() -> str:
     # A production version would use a more flexible configuration approach.
     try:
         from google.colab import userdata
-        api_key = userdata.get('CLAUDE_API_KEY')
+        api_key = userdata.get('ANTHROPIC_API_KEY')
         if api_key and api_key.strip():
             logger.info("✅ API key loaded from Colab secrets")
             return api_key

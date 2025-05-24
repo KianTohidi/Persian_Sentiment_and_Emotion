@@ -3,7 +3,7 @@ Persian Sentiment Analysis using OpenAI GPT-4o model via API
 
 This script performs Persian sentiment analysis using the OpenAI API and automates evaluation and visualization of results.
 Input: A file containing Persian texts with sentiment labels (sentiment_balanced.csv)
-Output: Multiple analysis files including OpenAI_sentiment_results.csv (main results),
+Output: Multiple analysis files including GPT4o_sentiment_results.csv (main results),
         confusion matrix, classification reports, and visualization charts
 
 Purpose:
@@ -68,13 +68,13 @@ VALID_SENTIMENTS = ['negative', 'neutral', 'positive']
 ENCODING_OPTIONS = ['utf-8-sig', 'utf-8', 'windows-1256', 'cp1256', 'ISO-8859-6']
 # File paths for all output files - centralized for easy modification
 OUTPUT_FILES = {
-    'results': "OpenAI_sentiment_results.csv",
-    'temp_results': "OpenAI_sentiment_results_temp.csv",  # For atomic file operations
-    'confusion': "OpenAI_sentiment_confusion_matrix.csv",
-    'report': "OpenAI_sentiment_classification_report.csv",
-    'heatmap': "OpenAI_sentiment_confusion_heatmap.png",
-    'confusion_pairs': "OpenAI_sentiment_confusion_pairs.csv",
-    'per_sentiment': "OpenAI_sentiment_accuracy.csv"
+    'results': "GPT4o_sentiment_results.csv",
+    'temp_results': "GPT4o_sentiment_results_temp.csv",  # For atomic file operations
+    'confusion': "GPT4o_sentiment_confusion_matrix.csv",
+    'report': "GPT4o_sentiment_classification_report.csv",
+    'heatmap': "GPT4o_sentiment_confusion_heatmap.png",
+    'confusion_pairs': "GPT4o_sentiment_confusion_pairs.csv",
+    'per_sentiment': "GPT4o_sentiment_accuracy.csv"
 }
 
 # Note: This implementation is specifically optimized for Google Colab to make it
@@ -178,7 +178,7 @@ def batch_detect_sentiments(texts: List[str], model_name: str = DEFAULT_MODEL, m
     
     Args:
         texts: List of Persian text strings to analyze
-        model_name: OpenAI model to use
+        model_name: GPT4o model to use
         max_retries: Maximum number of retry attempts if API call fails
         
     Returns:
@@ -569,8 +569,8 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         plt.ylim(0, 1)
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.savefig('OpenAI_sentiment_accuracy_chart.png', dpi=300, bbox_inches='tight')
-        files.download('OpenAI_sentiment_accuracy_chart.png')
+        plt.savefig('GPT4o_sentiment_accuracy_chart.png', dpi=300, bbox_inches='tight')
+        files.download('GPT4o_sentiment_accuracy_chart.png')
 
         print("\nInitiating downloads for evaluation results...")
         print(f"Download links created for evaluation files")
@@ -624,7 +624,7 @@ def main():
         for file_type, file_name in OUTPUT_FILES.items():
             if 'temp' not in file_type:
                 print(f"- {file_name}")
-        print("- OpenAI_sentiment_accuracy_chart.png")
+        print("- GPT4o_sentiment_accuracy_chart.png")
     else:
         print("No results to evaluate. Please check for errors above.")
 

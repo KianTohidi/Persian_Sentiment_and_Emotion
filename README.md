@@ -57,7 +57,7 @@ The codebase is organized in numerical order for reproducibility:
 - NumPy (tested with version 2.0.2)
 - Matplotlib (tested with version 3.10.0)
 - Seaborn (tested with version 0.13.2)
-- API keys for Claude, DeepSeek, Gemini, and OpenAI
+- API keys for Claude, DeepSeek, Gemini, and GPT-4o
 
 ### Setup Instructions
 1. Clone this repository

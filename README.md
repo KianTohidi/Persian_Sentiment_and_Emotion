@@ -11,7 +11,8 @@ Due to licensing restrictions, the CSV files are not included in this repository
 
 ## Sample Data
 Due to licensing restrictions, the original CSV files are not included in this repository. However, I've created sample files to demonstrate the expected format for inputs and outputs:
-- **Sample Files**: The `01_sentiment_files_samples` folder contains:
+- **Sample Files**:
+- The `01_sentiment_files_samples` folder contains:
   - A sample input CSV showing the required format before processing
   - A sample output CSV showing the expected structure after processing
     
@@ -21,7 +22,7 @@ Due to licensing restrictions, the original CSV files are not included in this r
   
 These samples are provided to help researchers understand the data format for reproducing the study. Please download the actual datasets from the links provided in the Datasets section.
 
-### Prompts: 
+### Prompts 
 The `03_prompts` folder contains:
 - `prompts/sentiment_analysis_prompt.txt`: Complete prompt used for sentiment analysis task
 - `prompts/emotion_detection_prompt.txt`: Complete prompt used for emotion detection task

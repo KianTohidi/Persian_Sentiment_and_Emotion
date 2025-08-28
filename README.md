@@ -22,7 +22,7 @@ Due to licensing restrictions, the original CSV files are not included in this r
   
 These samples are provided to help researchers understand the data format for reproducing the study. Please download the actual datasets from the links provided in the Datasets section.
 
-### Prompts 
+## Prompts
 The `03_prompts` folder contains:
 - `prompts/sentiment_analysis_prompt.txt`: Complete prompt used for sentiment analysis task
 - `prompts/emotion_detection_prompt.txt`: Complete prompt used for emotion detection task

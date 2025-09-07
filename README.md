@@ -55,6 +55,10 @@ The codebase is organized in numerical order for reproducibility:
 12. `12_gpt4o_sentiment_analysis.py`: Implementation of sentiment analysis using GPT-4o
 13. `13_gpt4o_emotion_detection.py`: Implementation of emotion detection using GPT-4o
 
+### Statistical Analysis and Evaluation:
+14. `14_sentiment_statistical_analysis.py`: Bootstrap confidence intervals and McNemar's test for sentiment analysis model comparison
+15. `15_emotion_statistical_analysis.py`: Bootstrap confidence intervals and McNemar's test for emotion detection model comparison
+
 ## Getting Started
 ### Prerequisites
 - Google Colab (recommended environment)

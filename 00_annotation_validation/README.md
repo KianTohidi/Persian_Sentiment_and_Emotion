@@ -80,4 +80,4 @@ For each dataset `dN` (`d1`–`d5`):
 ## Reference
 
 This folder supports the dataset validation described in Section 3.1.2 of
-the paper and is linked from the paper's Data Availability Statement..
+the paper and is linked from the paper's Data Availability Statement.

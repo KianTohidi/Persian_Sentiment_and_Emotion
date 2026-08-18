@@ -282,8 +282,9 @@ Where sentiment_name is ONLY one of: negative, neutral, positive.
                 if sentiment.lower() in VALID_SENTIMENTS:
                     validated_results[text_id] = sentiment.lower()
                 else:
-                    logger.warning(f"Invalid sentiment '{sentiment}' detected for text {text_id}. Skipping.")
-
+                    logger.warning(f"Invalid sentiment '{sentiment}' detected for text {text_id}. Recording as invalid — will be scored as an error, not excluded.")
+                    validated_results[text_id] = sentiment.lower()  # keep it instead of dropping it
+                
             elapsed_time = time.time() - start_time
             logger.info(f"✓ Processed {len(texts)} texts in {elapsed_time:.2f}s")
             return validated_results
@@ -471,22 +472,36 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         logger.error("No predictions were made. Evaluation cannot proceed.")
         return None, None
 
-    # Filter to rows with valid sentiment predictions
-    df_valid = df[df['predicted_sentiment'].isin(VALID_SENTIMENTS)]
+    # ↓↓↓ Identify invalid/out-of-label predictions instead of dropping them ↓↓↓
+    # Invalid predictions are RETAINED (not filtered out) so they count as
+    # errors in evaluation rather than shrinking the sample size.
+    is_invalid = ~df['predicted_sentiment'].isin(VALID_SENTIMENTS)
+    n_invalid = int(is_invalid.sum())
+    invalid_rate = n_invalid / len(df) if len(df) > 0 else 0.0
+    logger.info(f"Invalid-output rate: {n_invalid}/{len(df)} = {invalid_rate:.4%}")
+    if n_invalid > 0:
+        logger.warning(f"Invalid predictions found: "
+                        f"{df.loc[is_invalid, 'predicted_sentiment'].tolist()}")
 
-    if len(df_valid) == 0:
-        logger.error("No valid sentiment predictions found. Evaluation cannot proceed.")
-        return None, None
+    # Give invalid/missing predictions a placeholder label so they stay in
+    # the evaluation set. "invalid_output" is not one of VALID_SENTIMENTS,
+    # so it can never be scored as correct for any class — it becomes a
+    # miss (false negative) against the true label, exactly as intended.
+    df['predicted_sentiment_scored'] = df['predicted_sentiment'].where(
+        ~is_invalid, other='invalid_output'
+    )
 
     try:
-        # Calculate overall accuracy
-        accuracy = (df_valid['sentiment'] == df_valid['predicted_sentiment']).mean()
+        # ↓↓↓ Calculate overall accuracy - the proportion of correct predictions ↓↓↓
+        accuracy = (df['sentiment'] == df['predicted_sentiment_scored']).mean()
         logger.info(f"Overall accuracy: {accuracy:.4f}")
         print(f"Overall accuracy: {accuracy:.4f}")
-
-        # Generate classification report
+        # ↓↓↓ Generate detailed classification report (precision, recall, f1-score) ↓↓↓
         logger.info("\nClassification Report:")
-        cr = classification_report(df_valid['sentiment'], df_valid['predicted_sentiment'], output_dict=True)
+        cr = classification_report(
+            df['sentiment'], df['predicted_sentiment_scored'],
+            labels=VALID_SENTIMENTS, zero_division=0, output_dict=True
+        )
 
         # Round values for better readability
         for sentiment in cr:
@@ -506,8 +521,8 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
 
         # Generate confusion matrix
         cm = confusion_matrix(
-            df_valid['sentiment'],
-            df_valid['predicted_sentiment'],
+            df['sentiment'],
+            df['predicted_sentiment_scored'],
             labels=VALID_SENTIMENTS
         )
         cm_df = pd.DataFrame(cm, index=VALID_SENTIMENTS, columns=VALID_SENTIMENTS)
@@ -529,7 +544,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         files.download(OUTPUT_FILES['heatmap'])
 
         # Analyze commonly confused sentiment pairs
-        mistakes = df_valid[df_valid['sentiment'] != df_valid['predicted_sentiment']]
+        mistakes = df[df['sentiment'] != df['predicted_sentiment_scored']]
         if len(mistakes) > 0:
             print("\nCommonly confused pairs:")
             confusion_pairs = mistakes.groupby(['sentiment', 'predicted_sentiment']).size().reset_index(name='count')
@@ -544,9 +559,9 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         per_sentiment_accuracy = []
         print("\nPer-sentiment accuracy:")
         for sentiment in VALID_SENTIMENTS:
-            sentiment_subset = df_valid[df_valid['sentiment'] == sentiment]
+            sentiment_subset = df[df['sentiment'] == sentiment]
             if len(sentiment_subset) > 0:
-                sentiment_acc = (sentiment_subset['predicted_sentiment'] == sentiment).mean()
+                sentiment_acc = (sentiment_subset['predicted_sentiment_scored'] == sentiment).mean()
                 per_sentiment_accuracy.append({
                     'sentiment': sentiment,
                     'accuracy': sentiment_acc,

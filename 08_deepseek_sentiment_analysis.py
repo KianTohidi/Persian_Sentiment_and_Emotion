@@ -568,7 +568,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         for sentiment in VALID_SENTIMENTS:
             sentiment_subset = df[df['sentiment'] == sentiment]
             if len(sentiment_subset) > 0:
-                sentiment_acc = (sentiment_subset['predicted_sentiment'] == sentiment).mean()
+                sentiment_acc = (sentiment_subset['predicted_sentiment_scored'] == sentiment).mean()
                 per_sentiment_accuracy.append({
                     'sentiment': sentiment,
                     'accuracy': sentiment_acc,

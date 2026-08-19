@@ -281,14 +281,19 @@ Where emotion_name is ONLY one of: anger, fear, happiness, hate, sadness, surpri
                 else:
                     return {}
 
-            # Validate that all emotions are from our predefined list
+            # Validate that all emotions are from our predefined list.
+            # Invalid emotions are RECORDED, not skipped, so they remain in
+            # the results and are scored as errors downstream instead of
+            # silently disappearing from the evaluation sample.
+               
             validated_results = {}
             for text_id, emotion in results.items():
                 if emotion.lower() in VALID_EMOTIONS:
                     validated_results[text_id] = emotion.lower()
                 else:
-                    logger.warning(f"Invalid emotion '{emotion}' detected for text {text_id}. Skipping.")
-
+                    logger.warning(f"Invalid emotion '{emotion}' detected for text {text_id}. Recording as invalid — will be scored as an error, not excluded.")
+                    validated_results[text_id] = emotion.lower()
+                       
             elapsed_time = time.time() - start_time
             logger.info(f"✓ Processed {len(texts)} texts in {elapsed_time:.2f}s")
             return validated_results
@@ -473,23 +478,38 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         logger.error("No predictions were made. Evaluation cannot proceed.")
         return None, None
 
-    # Filter to only include valid emotion predictions
-    df_valid = df[df['predicted_emotion'].isin(VALID_EMOTIONS)]
+    # Identify invalid/out-of-label predictions instead of dropping them.
+    # Invalid predictions are RETAINED (not filtered out) so they count as
+    # errors in evaluation rather than shrinking the sample size.
+    is_invalid = ~df['predicted_emotion'].isin(VALID_EMOTIONS)
+    n_invalid = int(is_invalid.sum())
+    invalid_rate = n_invalid / len(df) if len(df) > 0 else 0.0
+    logger.info(f"Invalid-output rate: {n_invalid}/{len(df)} = {invalid_rate:.4%}")
+    if n_invalid > 0:
+        logger.warning(f"Invalid predictions found: "
+                        f"{df.loc[is_invalid, 'predicted_emotion'].tolist()}")
 
-    if len(df_valid) == 0:
-        logger.error("No valid emotion predictions found. Evaluation cannot proceed.")
-        return None, None
+    # Give invalid/missing predictions a placeholder label so they stay in
+    # the evaluation set. "invalid_output" is not one of VALID_EMOTIONS, so
+    # it can never be scored as correct for any class — it becomes a miss
+    # (false negative) against the true label, exactly as intended.
+    df['predicted_emotion_scored'] = df['predicted_emotion'].where(
+        ~is_invalid, other='invalid_output'
+    )
 
     try:
         # Calculate overall accuracy
-        accuracy = (df_valid['emotion'] == df_valid['predicted_emotion']).mean()
+        accuracy = (df['emotion'] == df['predicted_emotion_scored']).mean()
         logger.info(f"Overall accuracy: {accuracy:.4f}")
         print(f"Overall accuracy: {accuracy:.4f}")
 
         # Generate detailed classification report with precision, recall, f1-score
         logger.info("\nClassification Report:")
-        cr = classification_report(df_valid['emotion'], df_valid['predicted_emotion'], output_dict=True)
-
+        cr = classification_report(
+            df['emotion'], df['predicted_emotion_scored'],
+            labels=VALID_EMOTIONS, zero_division=0, output_dict=True
+        )
+ 
         # Round values for better readability
         for emotion in cr:
             if isinstance(cr[emotion], dict):
@@ -507,8 +527,8 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
 
         # Generate confusion matrix to visualize prediction patterns
         cm = confusion_matrix(
-            df_valid['emotion'],
-            df_valid['predicted_emotion'],
+            df['emotion'],
+            df['predicted_emotion_scored'],
             labels=VALID_EMOTIONS
         )
         cm_df = pd.DataFrame(cm, index=VALID_EMOTIONS, columns=VALID_EMOTIONS)
@@ -530,7 +550,7 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         files.download(OUTPUT_FILES['heatmap'])
 
         # Analyze commonly confused emotion pairs
-        mistakes = df_valid[df_valid['emotion'] != df_valid['predicted_emotion']]
+        mistakes = df[df['emotion'] != df['predicted_emotion_scored']]
         if len(mistakes) > 0:
             print("\nCommonly confused pairs:")
             confusion_pairs = mistakes.groupby(['emotion', 'predicted_emotion']).size().reset_index(name='count')
@@ -544,9 +564,9 @@ def evaluate_results(df: pd.DataFrame) -> Tuple[Optional[float], Optional[pd.Dat
         per_emotion_accuracy = []
         print("\nPer-emotion accuracy:")
         for emotion in VALID_EMOTIONS:
-            emotion_subset = df_valid[df_valid['emotion'] == emotion]
+            emotion_subset = df[df['emotion'] == emotion]
             if len(emotion_subset) > 0:
-                emotion_acc = (emotion_subset['predicted_emotion'] == emotion).mean()
+                emotion_acc = (emotion_subset['predicted_emotion_scored'] == emotion).mean()
                 per_emotion_accuracy.append({
                     'emotion': emotion,
                     'accuracy': emotion_acc,

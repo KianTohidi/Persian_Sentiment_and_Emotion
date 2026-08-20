@@ -23,33 +23,37 @@ BASE_FILES_MODELS = {
 }
 
 def clean_emotion_data(df, columns):
-    """Clean emotion data and filter to valid samples"""
+    """Lowercase/strip all columns, drop rows only where the ground-truth
+    'emotion' is missing/invalid, and replace any invalid (out-of-label)
+    PREDICTION with a placeholder instead of dropping the row. This keeps
+    invalid predictions in the evaluation set so they are scored as errors,
+    rather than silently shrinking the sample size."""
     df_clean = df.copy()
 
-    # Convert to lowercase and strip whitespace
     for col in columns:
-        if col in df_clean.columns: # Added check
+        if col in df_clean.columns:
             df_clean[col] = df_clean[col].astype(str).str.strip().str.lower()
         else:
-            print(f"⚠️  Column '{col}' not found in DataFrame during cleaning.") # Added warning
+            print(f"⚠️  Column '{col}' not found in DataFrame during cleaning.")
 
-    # Filter to valid emotions
-    mask = True
-    if 'emotion' in df_clean.columns: # Check if 'emotion' column exists
+    # Drop rows only if the ground-truth label itself is invalid/missing --
+    # that's a genuine data problem, not a model hallucination.
+    if 'emotion' in df_clean.columns:
         mask = df_clean['emotion'].isin(VALID_EMOTIONS)
-        for col in [c for c in columns if c != 'emotion']: # Corrected list comprehension syntax
-            if col in df_clean.columns:
-                mask &= df_clean[col].isin(VALID_EMOTIONS)
-        return df_clean[mask].reset_index(drop=True)
+        df_clean = df_clean[mask].reset_index(drop=True)
     else:
-        # Handle cases where 'emotion' is not expected in the cleaning process (e.g., temp dfs in bootstrap)
-        print("⚠️  'emotion' column not found in DataFrame during cleaning. Skipping emotion-based filtering.")
-        # Still apply other cleaning like lowercasing and stripping
-        for col in columns:
-             if col in df_clean.columns:
-                df_clean[col] = df_clean[col].astype(str).str.strip().str.lower()
-        return df_clean.reset_index(drop=True)
+        print("⚠️  'emotion' column not found in DataFrame during cleaning. Skipping ground-truth filtering.")
 
+    # For prediction columns, do NOT drop invalid rows -- replace the invalid
+    # label with a placeholder so it stays in the sample and is scored as a
+    # miss against the true label (never as a match for any valid class).
+    for col in [c for c in columns if c != 'emotion']:
+        if col in df_clean.columns:
+            is_invalid = ~df_clean[col].isin(VALID_EMOTIONS)
+            if is_invalid.any():
+                df_clean.loc[is_invalid, col] = 'invalid_output'
+
+    return df_clean
 
 def match_file_to_model(filename):
     """Match uploaded filename to model, handling version numbers"""
@@ -153,7 +157,8 @@ def bootstrap_accuracy(y_true, y_pred, **kwargs):
 
 def bootstrap_f1_score(y_true, y_pred, **kwargs):
     """Calculate bootstrap confidence interval for F1-score"""
-    return bootstrap_metric(y_true, y_pred, f1_score, 'f1', average='macro', zero_division=0, **kwargs)
+    return bootstrap_metric(y_true, y_pred, f1_score, 'f1', average='macro',
+                             labels=VALID_EMOTIONS, zero_division=0, **kwargs)
 
 def mcnemar_test(y_true, y_pred1, y_pred2, model1_name, model2_name):
     """Perform McNemar's test to compare two models"""
@@ -237,9 +242,9 @@ def calculate_model_metrics(df, model_columns):
             continue
 
         accuracy = accuracy_score(df_clean_model['emotion'], df_clean_model[model])
-        f1_macro = f1_score(df_clean_model['emotion'], df_clean_model[model], average='macro', zero_division=0)
-        f1_weighted = f1_score(df_clean_model['emotion'], df_clean_model[model], average='weighted', zero_division=0)
-
+        f1_macro = f1_score(df_clean_model['emotion'], df_clean_model[model], average='macro', labels=VALID_EMOTIONS, zero_division=0)
+        f1_weighted = f1_score(df_clean_model['emotion'], df_clean_model[model], average='weighted', labels=VALID_EMOTIONS, zero_division=0)
+        
         results[model] = {
             'accuracy': accuracy,
             'f1_macro': f1_macro,

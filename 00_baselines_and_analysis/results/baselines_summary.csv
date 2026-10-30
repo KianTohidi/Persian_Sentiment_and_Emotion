@@ -1,0 +1,7 @@
+task,model,runs,acc_mean,acc_sd,f1_mean,f1_sd,train_min_mean,train_min_max,infer_sec_mean
+emotion,mbert,5,71.52,1.45,71.68,1.58,3.26,3.6,3.0
+emotion,parsbert,5,77.68,0.23,77.76,0.29,7.44,7.7,2.12
+emotion,xlmr,5,78.37,0.83,78.33,0.88,9.0,9.3,2.24
+sentiment,mbert,5,77.91,1.13,77.95,1.12,4.54,4.7,1.42
+sentiment,parsbert,5,79.78,0.61,79.79,0.6,6.34,9.0,1.12
+sentiment,xlmr,5,81.91,0.44,81.94,0.45,9.36,9.9,1.2

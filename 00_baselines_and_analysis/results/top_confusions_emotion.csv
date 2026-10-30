@@ -1,0 +1,11 @@
+true label,model said,LLMs (avg per model),fine-tuned (avg per model)
+surprise,anger,53.8,32.3
+anger,sadness,22.5,37.7
+happiness,sadness,8.0,46.3
+sadness,anger,31.8,22.0
+hate,anger,38.0,14.0
+hate,sadness,23.2,26.7
+sadness,happiness,17.0,31.3
+surprise,happiness,27.5,15.3
+surprise,sadness,21.0,20.7
+happiness,surprise,16.0,19.0

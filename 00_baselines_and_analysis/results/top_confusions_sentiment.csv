@@ -1,0 +1,7 @@
+true label,model said,LLMs (avg per model),fine-tuned (avg per model)
+negative,neutral,45.5,34.0
+neutral,negative,24.2,42.0
+neutral,positive,40.8,23.7
+positive,negative,15.2,39.7
+positive,neutral,24.8,22.3
+negative,positive,28.0,19.0

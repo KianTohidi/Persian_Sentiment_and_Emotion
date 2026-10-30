@@ -1,0 +1,7 @@
+task,model,seed,run,val_f1,test_acc,test_f1
+emotion,mbert,42,mbert_emotion_s42,0.7244,0.7378,0.7408
+emotion,parsbert,44,parsbert_emotion_s44,0.7672,0.7772,0.779
+emotion,xlmr,43,xlmr_emotion_s43,0.765,0.7917,0.7918
+sentiment,mbert,44,mbert_sentiment_s44,0.7659,0.7911,0.7917
+sentiment,parsbert,45,parsbert_sentiment_s45,0.7875,0.7911,0.7918
+sentiment,xlmr,44,xlmr_sentiment_s44,0.8119,0.8156,0.8157

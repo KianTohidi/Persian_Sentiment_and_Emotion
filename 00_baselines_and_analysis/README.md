@@ -36,6 +36,12 @@ Code and results for the comparison of four zero-shot LLMs (Claude 3.7 Sonnet, D
 
 Scripts `02`, `07` and `09` create files that are then filled in or used by later steps; the completed files are included, so every later script can be run directly.
 
+### Fine-tuned baselines and additional analyses:
+- `00_baselines_and_analysis/`: fine-tuning of ParsBERT, XLM-R and mBERT, comparison with the four LLMs (confidence intervals, McNemar tests, error analysis) and the manual label check of texts misclassified by all models. See the README in that folder.
+- `00_annotation_validation/`: annotation validation of the five candidate datasets.
+- `00_robustness_check/`: batch (20) vs. single-instance (1) robustness check of the LLM predictions.
+
+
 ## Setup
 
 ```

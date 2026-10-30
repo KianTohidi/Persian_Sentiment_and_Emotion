@@ -1,0 +1,85 @@
+﻿item_id,text,group,gt,a1,a2,discussed,consensus,claude,deepseek,gemini,gpt4o,parsbert,xlmr,mbert
+S001,برنامتون بینظیره واقعا درجه یک هستید,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S002,آقای رشید پور خیلی مراقب خود باشید هزار الله اکبر (همه چی تمام) الهی همیشه سلامت باشید,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S003,لطفا از آقای تنابنده بپرسید لوکیشن جنگ با داعش در کجا قرار داشت؟؟؟,all_models_right,neutral,negative,negative,False,negative,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S004,سسسلام، واقعا برنامه حالا خورشید داره شروع میشه؟؟؟,all_models_wrong,positive,positive,neutral,True,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S005,حمیدفرخ نژادوجوادعزتی ✌,all_models_wrong,neutral,positive,neutral,True,neutral,positive,positive,positive,positive,positive,positive,positive
+S006,سلام صبح بخیر پسرای عزیزم. برنامتون خیلی قشنگه. اما متاسفانه من سر گارم و استثنایی اگر خونه باشم می‌بینم همینطور ادامه بدید خیلی انرژی مثبت هستید. با سپاس سامانی,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S007,ن ب تاثیر قطعی سوابق اگ بچه خودتون تو وضعیت ما بود چ میکردید کمکمووون کنیننن,all_models_wrong,positive,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S008,آقای رشید پور اگه نمیتونی کاری کنی برنامتو تعطیل کن,all_models_wrong,neutral,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S009,وقتی بابام رفت بیا,all_models_wrong,negative,neutral,negative,True,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S010,حمید فرخ نژا د,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S011,لطفا پیگیر لغو قانون ظالمانه تاثیر قطعی معدل در کنکور باشید. آیا سوالات برای همه قبل جلسه لو رفته؟ آیا کسی که در روستا درس میخواند سطح برابری با کسی که در بهترین مدارس پایتخت و کلان شهرها درس میخواند، دارد؟,all_models_wrong,neutral,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S012,واقعا غیر منتظره بود تا وقتی محسن چاووشی هست بانی نباید رای میاورد,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S013,فیلم هندیه دیگه,all_models_wrong,negative,negative,neutral,True,negative,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S014,کارشون عالیه,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S015,۶سالار عقیلی,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S016,LINK کننده هسش,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S017,مژگان: هیچوقت نخواه زیر پای ادمی رو خالی کنی یا بهش ضربه بزنی. چون روزگار باهات تلافی میکنه پس خوب باش و برای همه خوب بخواه.. ‌.,all_models_wrong,neutral,positive,neutral,True,positive,positive,positive,positive,positive,negative,negative,negative
+S018,باعث افتخار ماهستن ایشون,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S019,آقای وزیر نمیدونم چ سودی از تاثیر قطعی معدل میبری ولی تو این دنیا آینده و رویا ما رو نابود کردی...,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S020,ی خورده هم در مورد عیدی راننده‌های قراردادی بگید واقعن در حق ما خیلی ظلم میکنند,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S021,اگه میشه بپرسید پایتخت NUM۱ هم میسازید؟,all_models_wrong,negative,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S022,برنامتون عالیه خواهش میکنم ادامه بدید. چرا یهوی؟؟؟,all_models_wrong,negative,positive,neutral,True,positive,positive,positive,positive,positive,positive,positive,positive
+S023,خدا میدونه آقای رشیدپور هرروز که شمارو میبینم برای سلامتیتون دعا میکنم. مارو از برنامه خوبتون محروم نکنید 😢 💔,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,negative,negative,positive
+S024,۶۶۳۲۷۴ بو دماغ سوخته میاد,all_models_wrong,positive,negative,negative,False,negative,neutral,negative,negative,negative,negative,negative,neutral
+S025,بی نظیر اگر ساعتش ساعت NUM۱ شروع کنید عالیه و تکرارش مهمه,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S026,رضا رشیدپور مهران مدیری جواد خیابانی علی دائی علی کریمی دکتر جواد ظریف,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S027,اقای رشید پور از مردم زلزله زده خیلی خبر شنیدم که خودکشی می‌کنند مگه به اونها رسیدگی نمیشه که این همه خبر بد میشنویم hala_khorshid @,all_models_wrong,neutral,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S028,این حرفا رو فقط خودشون باور میکنند طرف فکر میکنه مردم نمیفهمند؟,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S029,کودکی من چهارشنبه سوری، قاشق زنی، فالگوش، بود، با آتش زدن بوته، آجیل چهارشنبه سوری، خیلی عالی بود، 💕 💕 💕 🙋 🙋,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S030,لطفا بگید اگر مرده حالا بره سوریه😂 😂 😂,all_models_wrong,positive,positive,neutral,True,neutral,neutral,neutral,neutral,neutral,neutral,negative,negative
+S031,اقای رشید پور از عراقیها که این روزها در ایران جولان میدن از خرید زمین و ازدواج و... اقای رشید پور جان بچهات یه سر برو مشهد یه سر خوزستان اونوقت شب با ارامش نخواهی_خوابید کاری که جنگ نتونست با این کشور بکنه مسعولین بی لیاقت دارن به طور قانونی با این کشور میکنن,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S032,خدا قوت، ممنون از برنامه عالیتون.,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S033,آخوندی چهره‌ی سال LINK توکارش یه عالمه دسته گلهای خوب داده وتونسته آدمای زیادی LINK به موفقیتش👏 👏 👏 وزیزراه بهترین چهره ست بااین تفاسیر,all_models_wrong,negative,positive,negative,True,positive,positive,positive,positive,positive,positive,positive,positive
+S034,الان چی شد؟ پشت کنکورا هم تاثیر قطعین؟,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S035,شعرلری تقدیم حالا خورشیدی‌های LINK خورشیدکه نبو حال ما هم LINK که نیسی دلمه تش ایزنی وای حال خرابم، تو بیو سی مرحمم وای دل کبابم، تو بیوآرام جون طبیب دردم، گر بخوی روز د LINK تو نیگردم،,all_models_wrong,neutral,neutral,positive,True,neutral,negative,negative,negative,negative,negative,negative,negative
+S036,آقای مهران مدیری و آقای رشیدپور,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S037,پرفسور مریم میرزاخانی,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S038,آقای جواد خیابانی عزیز,all_models_wrong,positive,positive,neutral,True,positive,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S039,تکرار برنامه ساعت چندهست,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S040,آقای مهران مدیری عزیز,all_models_wrong,positive,positive,neutral,True,positive,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S041,علی کریمی و مهران مدیری,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S042,بامید خدا اینقدر پیام ندید بسلامت,all_models_wrong,positive,negative,neutral,True,neutral,neutral,neutral,neutral,neutral,negative,negative,negative
+S043,سردار سلیمان قاسمی، شهید محسن حججی، شهید حدادیان,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S044,فقط عشق جان هیراد,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S045,نزدیک عید است خدایا تورا به مهربانیت قسم کسی گرفتار نشه کسی شرمنده خانواده‌اش نباشه هیچ چشمی گریان نشه هیچ قلبی نشکنه کسی مریض و مریض دار نباشه الهی آمین... 🌴 👈,all_models_wrong,neutral,positive,neutral,True,positive,positive,positive,positive,positive,negative,positive,negative
+S046,نه به تاثیر قطعی امتحانات نهایی نه به تاثیر نهایی درکنکور,all_models_wrong,positive,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S047,منه کم بینا ک نمیتونم یه کار پیدا کنم,all_models_wrong,neutral,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S048,فصل بعدی هم خواهد_بود؟,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S049,آقارشیدتورا به هرکی که بیشتردوست داری قسم بامن حتماحتماحتماتماس بگیرکاواجب دارم ۰۹۱۴۷۳۴۹۴۲۳,all_models_wrong,negative,negative,neutral,True,neutral,neutral,neutral,neutral,neutral,positive,neutral,positive
+S050,بگو چه طوری شیش تا خوردی,all_models_wrong,positive,negative,negative,False,negative,neutral,neutral,negative,neutral,neutral,neutral,negative
+S051,خیلی عالی راضی هستیم,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S052,خانم پروفسور,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S053,سلام خسته نباشید اقای رشید پور عزیز، چرا اخه برنامه قشنگتون تموم میشه؟ دلمون گرفت,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S054,سلام خسته نباشید وقتتون بخیر تروخدا درباره سربازی حرف بزنید دو سال سربازی تو هیچ کشوری وجود نداره چرا کشور ما به جوانان اهمیت نمی‌دهند مگه ما نمیگیم کشور ایران اسلامیه و اسلام هم میگه راه رو برای ازدواج جوان‌ها راحتر کنید و لی این سربازی باعث کم شدم و سخت ازدواج شده تروخدا بگین کمترش کنن,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S055,آقای مهندس رشید پور روز مهندس مبارکتون,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S056,چرا وزیر آموزش و پرورش پاسخگو نیست,all_models_wrong,positive,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S057,آقای رشید پور اگر خیلی دنبال عدالت هستید و فرصت توضیح برای متهمان پرونده ثامن رو در رسانه میلی میدید فرصت صحبت به خانواده مائده هژبری کاووس سید امامی و خیلی‌های دیگه رو هم بیدید اگر نه که جمع کنید این شو‌های عوام فریبانه رو,all_models_wrong,positive,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S058,سه وهشت یعنی هومن سیدی ونوید محمدزاده عالی بورن,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S059,جناب وزیر فقط در ارتباط با نظ ظالم جدیدی‌ها صحبت کردند و در ارتباط با ما نظام قدیمی‌ها هیچ صحبتی نکردند,all_models_wrong,positive,negative,negative,False,negative,neutral,negative,neutral,negative,negative,negative,negative
+S060,چرا دانش آموزان نظام قدیم را در نظر نمیگیرید,all_models_right,negative,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S061,زامروز همه از برف و سفیدپوش شدن زمین می‌گویند... اما برای من که دلم در‌همه‌ی فصل‌های سال، سفید‌پوش مهربانی‌ توست، این برف‌ چیزی جز تکرار مهربانی نیست...! نعیمه اسلامی از یزد,all_models_wrong,neutral,neutral,neutral,False,neutral,positive,positive,positive,positive,negative,negative,negative
+S062,امروز نبودین زدم شبکه‌های دیگه حالم گرفته_شد از صبح تا حالاهم انگار یه چیزی گم کردم انشاالله که زود وپربارتر برگردین. آقا نشاط عزیز امروز نشاط و سر زندگی هرروز و نداشتم,all_models_right,negative,negative,positive,True,negative,negative,negative,negative,negative,negative,negative,negative
+S063,برنامه با بودن هر دوی شما زیباتر میشه,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S064,با شما کاملا موافقم... این کتاب بسیار زیبا عشق رو روایت کرده.. من این کتاب و هدیه هم دادم... بی‌نهایت سپاس برای دعوت از نویسنده‌اش...,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S065,سلام و خسته نباشید خدمت همه زحمت کشان برنامه... میشه لطفا من رو زیر پست کمک به امیرپرهام، تگ کنید؟,all_models_right,neutral,positive,neutral,True,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S066,امیر از ته چاه,all_models_wrong,negative,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S067,شما بینهایت سرشار از انرژی یا بروایتی بمب انرژی هستین همیشه سالم باشید الهی,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S068,بهشون بگین مازندرانی حرف بزنن,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S069,علی دایی و جواد خیابانی,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S070,بله. عااالیه. دست مریزاد,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S071,چرا خشاب ندادین به رحمت؟ 😂,all_models_wrong,positive,positive,neutral,True,positive,neutral,neutral,neutral,neutral,negative,negative,negative
+S072,اگه امروز پسر خوبی باشی وپارازیت ندی، قول میدم بزارم یکروز توبا مهمونمون مصاحبه کنی😉 😉 😉,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S073,باسلام، آقای رشیدپور لطفا درمورد قانون معافیت و کسری فرزندان ایثارگر هم صحبت کنید بخدا این درست نیست که اول امیدوار کنند بعدش از زندگیمون نیز ناامیدمون کنند، توروخدا تو برنامتون با سردار کمالی صحبت کنید فقط ده دقیقه از برنامتونو اختصاص بدین بهش، چرا میخوان این قانونو بپیچونند توروخدا آقای رشیدپور یه کاریش کن بعد خدا امیدمون به شماست🙏 🙏 🙏,all_models_wrong,neutral,negative,negative,False,negative,negative,negative,negative,negative,negative,negative,negative
+S074,نوید محمدزاده و شهاب حسینی,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S075,آقای تنابنده. هنرمند سنگ اول. هنرمند مردمی. شنبه بیایید و بگویید چرا...؟,all_models_wrong,negative,negative,neutral,True,negative,positive,positive,neutral,neutral,neutral,neutral,neutral
+S076,هربژی کورد,all_models_wrong,positive,positive,positive,False,positive,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S077,بزرگترین دزدی دولتی با همکاری شرکت سکه ثامن و وزارتخانه‌ها صنعت معدن وتجارت ووزارت ارتباطات و بانک مرکزی وقوه قضاییه,all_models_wrong,neutral,negative,neutral,True,negative,negative,negative,negative,negative,negative,negative,negative
+S078,خسته نباشید میکم برای برنامه خیلی خیلی خوبتون تشکر میکن و از شما دوتا مجری توانمند اقا رضا و اقای نشاط افرین,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S079,واقعا عالیههه... مرد با شخصیت. دوست داشتنی.. هنرمند و مادببب,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S080,سلام صبح بخیر چه خوبه که باهم مهربان ترباشیم,all_models_wrong,neutral,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S081,آقای رشید وور,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral
+S082,من خیلی به این بانوی محترم ارادت دارم چهره‌ای مهربان ودوست داشتنی وهنرمند قابلی هستن,all_models_right,positive,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S083,سلام ودرود برآقای رشید پور خیلی جای شما خالی بود من هم به جای مادر شما هستم پسرم,all_models_wrong,negative,positive,positive,False,positive,positive,positive,positive,positive,positive,positive,positive
+S084,اقای شهاب حسینی,all_models_right,neutral,neutral,neutral,False,neutral,neutral,neutral,neutral,neutral,neutral,neutral,neutral

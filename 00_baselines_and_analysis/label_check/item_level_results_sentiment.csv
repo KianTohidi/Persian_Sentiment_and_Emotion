@@ -1,0 +1,85 @@
+﻿item_id,text,gt,group,a1,s1,a2,s2,category
+S001,برنامتون بینظیره واقعا درجه یک هستید,positive,all_models_right,positive,,positive,,confirmed
+S002,آقای رشید پور خیلی مراقب خود باشید هزار الله اکبر (همه چی تمام) الهی همیشه سلامت باشید,neutral,all_models_wrong,positive,,positive,,contradicted
+S003,لطفا از آقای تنابنده بپرسید لوکیشن جنگ با داعش در کجا قرار داشت؟؟؟,neutral,all_models_right,negative,,negative,,contradicted
+S004,سسسلام، واقعا برنامه حالا خورشید داره شروع میشه؟؟؟,positive,all_models_wrong,positive,,neutral,,split
+S005,حمیدفرخ نژادوجوادعزتی ✌,neutral,all_models_wrong,positive,,neutral,,split
+S006,سلام صبح بخیر پسرای عزیزم. برنامتون خیلی قشنگه. اما متاسفانه من سر گارم و استثنایی اگر خونه باشم می‌بینم همینطور ادامه بدید خیلی انرژی مثبت هستید. با سپاس سامانی,positive,all_models_right,positive,,positive,,confirmed
+S007,ن ب تاثیر قطعی سوابق اگ بچه خودتون تو وضعیت ما بود چ میکردید کمکمووون کنیننن,positive,all_models_wrong,negative,,negative,,contradicted
+S008,آقای رشید پور اگه نمیتونی کاری کنی برنامتو تعطیل کن,neutral,all_models_wrong,negative,,negative,,contradicted
+S009,وقتی بابام رفت بیا,negative,all_models_wrong,neutral,,negative,,split
+S010,حمید فرخ نژا د,neutral,all_models_right,neutral,,neutral,,confirmed
+S011,لطفا پیگیر لغو قانون ظالمانه تاثیر قطعی معدل در کنکور باشید. آیا سوالات برای همه قبل جلسه لو رفته؟ آیا کسی که در روستا درس میخواند سطح برابری با کسی که در بهترین مدارس پایتخت و کلان شهرها درس میخواند، دارد؟,neutral,all_models_wrong,negative,,negative,,contradicted
+S012,واقعا غیر منتظره بود تا وقتی محسن چاووشی هست بانی نباید رای میاورد,negative,all_models_right,negative,,negative,,confirmed
+S013,فیلم هندیه دیگه,negative,all_models_wrong,negative,,neutral,,split
+S014,کارشون عالیه,positive,all_models_right,positive,,positive,,confirmed
+S015,۶سالار عقیلی,neutral,all_models_right,neutral,,neutral,,confirmed
+S016,LINK کننده هسش,neutral,all_models_right,neutral,,neutral,,confirmed
+S017,مژگان: هیچوقت نخواه زیر پای ادمی رو خالی کنی یا بهش ضربه بزنی. چون روزگار باهات تلافی میکنه پس خوب باش و برای همه خوب بخواه.. ‌.,neutral,all_models_wrong,positive,,neutral,,split
+S018,باعث افتخار ماهستن ایشون,positive,all_models_right,positive,,positive,,confirmed
+S019,آقای وزیر نمیدونم چ سودی از تاثیر قطعی معدل میبری ولی تو این دنیا آینده و رویا ما رو نابود کردی...,negative,all_models_right,negative,,negative,,confirmed
+S020,ی خورده هم در مورد عیدی راننده‌های قراردادی بگید واقعن در حق ما خیلی ظلم میکنند,negative,all_models_right,negative,,negative,,confirmed
+S021,اگه میشه بپرسید پایتخت NUM۱ هم میسازید؟,negative,all_models_wrong,neutral,,neutral,,contradicted
+S022,برنامتون عالیه خواهش میکنم ادامه بدید. چرا یهوی؟؟؟,negative,all_models_wrong,positive,,neutral,,split
+S023,خدا میدونه آقای رشیدپور هرروز که شمارو میبینم برای سلامتیتون دعا میکنم. مارو از برنامه خوبتون محروم نکنید 😢 💔,neutral,all_models_wrong,positive,,positive,,contradicted
+S024,۶۶۳۲۷۴ بو دماغ سوخته میاد,positive,all_models_wrong,negative,,negative,,contradicted
+S025,بی نظیر اگر ساعتش ساعت NUM۱ شروع کنید عالیه و تکرارش مهمه,neutral,all_models_wrong,positive,,positive,,contradicted
+S026,رضا رشیدپور مهران مدیری جواد خیابانی علی دائی علی کریمی دکتر جواد ظریف,neutral,all_models_right,neutral,,neutral,,confirmed
+S027,اقای رشید پور از مردم زلزله زده خیلی خبر شنیدم که خودکشی می‌کنند مگه به اونها رسیدگی نمیشه که این همه خبر بد میشنویم hala_khorshid @,neutral,all_models_wrong,negative,,negative,,contradicted
+S028,این حرفا رو فقط خودشون باور میکنند طرف فکر میکنه مردم نمیفهمند؟,negative,all_models_right,negative,,negative,,confirmed
+S029,کودکی من چهارشنبه سوری، قاشق زنی، فالگوش، بود، با آتش زدن بوته، آجیل چهارشنبه سوری، خیلی عالی بود، 💕 💕 💕 🙋 🙋,neutral,all_models_wrong,positive,,positive,,contradicted
+S030,لطفا بگید اگر مرده حالا بره سوریه😂 😂 😂,positive,all_models_wrong,positive,,neutral,,split
+S031,اقای رشید پور از عراقیها که این روزها در ایران جولان میدن از خرید زمین و ازدواج و... اقای رشید پور جان بچهات یه سر برو مشهد یه سر خوزستان اونوقت شب با ارامش نخواهی_خوابید کاری که جنگ نتونست با این کشور بکنه مسعولین بی لیاقت دارن به طور قانونی با این کشور میکنن,negative,all_models_right,negative,,negative,,confirmed
+S032,خدا قوت، ممنون از برنامه عالیتون.,positive,all_models_right,positive,,positive,,confirmed
+S033,آخوندی چهره‌ی سال LINK توکارش یه عالمه دسته گلهای خوب داده وتونسته آدمای زیادی LINK به موفقیتش👏 👏 👏 وزیزراه بهترین چهره ست بااین تفاسیر,negative,all_models_wrong,positive,,negative,,split
+S034,الان چی شد؟ پشت کنکورا هم تاثیر قطعین؟,neutral,all_models_right,neutral,,neutral,,confirmed
+S035,شعرلری تقدیم حالا خورشیدی‌های LINK خورشیدکه نبو حال ما هم LINK که نیسی دلمه تش ایزنی وای حال خرابم، تو بیو سی مرحمم وای دل کبابم، تو بیوآرام جون طبیب دردم، گر بخوی روز د LINK تو نیگردم،,neutral,all_models_wrong,neutral,,positive,,split
+S036,آقای مهران مدیری و آقای رشیدپور,neutral,all_models_right,neutral,,neutral,,confirmed
+S037,پرفسور مریم میرزاخانی,neutral,all_models_right,neutral,,neutral,,confirmed
+S038,آقای جواد خیابانی عزیز,positive,all_models_wrong,positive,,neutral,,split
+S039,تکرار برنامه ساعت چندهست,neutral,all_models_right,neutral,,neutral,,confirmed
+S040,آقای مهران مدیری عزیز,positive,all_models_wrong,positive,,neutral,,split
+S041,علی کریمی و مهران مدیری,neutral,all_models_right,neutral,,neutral,,confirmed
+S042,بامید خدا اینقدر پیام ندید بسلامت,positive,all_models_wrong,negative,,neutral,,split
+S043,سردار سلیمان قاسمی، شهید محسن حججی، شهید حدادیان,neutral,all_models_right,neutral,,neutral,,confirmed
+S044,فقط عشق جان هیراد,neutral,all_models_wrong,positive,,positive,,contradicted
+S045,نزدیک عید است خدایا تورا به مهربانیت قسم کسی گرفتار نشه کسی شرمنده خانواده‌اش نباشه هیچ چشمی گریان نشه هیچ قلبی نشکنه کسی مریض و مریض دار نباشه الهی آمین... 🌴 👈,neutral,all_models_wrong,positive,,neutral,,split
+S046,نه به تاثیر قطعی امتحانات نهایی نه به تاثیر نهایی درکنکور,positive,all_models_wrong,negative,,negative,,contradicted
+S047,منه کم بینا ک نمیتونم یه کار پیدا کنم,neutral,all_models_wrong,negative,,negative,,contradicted
+S048,فصل بعدی هم خواهد_بود؟,neutral,all_models_right,neutral,,neutral,,confirmed
+S049,آقارشیدتورا به هرکی که بیشتردوست داری قسم بامن حتماحتماحتماتماس بگیرکاواجب دارم ۰۹۱۴۷۳۴۹۴۲۳,negative,all_models_wrong,negative,,neutral,,split
+S050,بگو چه طوری شیش تا خوردی,positive,all_models_wrong,negative,,negative,,contradicted
+S051,خیلی عالی راضی هستیم,positive,all_models_right,positive,,positive,,confirmed
+S052,خانم پروفسور,neutral,all_models_right,neutral,,neutral,,confirmed
+S053,سلام خسته نباشید اقای رشید پور عزیز، چرا اخه برنامه قشنگتون تموم میشه؟ دلمون گرفت,negative,all_models_right,negative,,negative,,confirmed
+S054,سلام خسته نباشید وقتتون بخیر تروخدا درباره سربازی حرف بزنید دو سال سربازی تو هیچ کشوری وجود نداره چرا کشور ما به جوانان اهمیت نمی‌دهند مگه ما نمیگیم کشور ایران اسلامیه و اسلام هم میگه راه رو برای ازدواج جوان‌ها راحتر کنید و لی این سربازی باعث کم شدم و سخت ازدواج شده تروخدا بگین کمترش کنن,negative,all_models_right,negative,,negative,,confirmed
+S055,آقای مهندس رشید پور روز مهندس مبارکتون,positive,all_models_right,positive,,positive,,confirmed
+S056,چرا وزیر آموزش و پرورش پاسخگو نیست,positive,all_models_wrong,negative,,negative,,contradicted
+S057,آقای رشید پور اگر خیلی دنبال عدالت هستید و فرصت توضیح برای متهمان پرونده ثامن رو در رسانه میلی میدید فرصت صحبت به خانواده مائده هژبری کاووس سید امامی و خیلی‌های دیگه رو هم بیدید اگر نه که جمع کنید این شو‌های عوام فریبانه رو,positive,all_models_wrong,negative,,negative,,contradicted
+S058,سه وهشت یعنی هومن سیدی ونوید محمدزاده عالی بورن,neutral,all_models_wrong,positive,,positive,,contradicted
+S059,جناب وزیر فقط در ارتباط با نظ ظالم جدیدی‌ها صحبت کردند و در ارتباط با ما نظام قدیمی‌ها هیچ صحبتی نکردند,positive,all_models_wrong,negative,,negative,,contradicted
+S060,چرا دانش آموزان نظام قدیم را در نظر نمیگیرید,negative,all_models_right,negative,,negative,,confirmed
+S061,زامروز همه از برف و سفیدپوش شدن زمین می‌گویند... اما برای من که دلم در‌همه‌ی فصل‌های سال، سفید‌پوش مهربانی‌ توست، این برف‌ چیزی جز تکرار مهربانی نیست...! نعیمه اسلامی از یزد,neutral,all_models_wrong,neutral,,neutral,,confirmed
+S062,امروز نبودین زدم شبکه‌های دیگه حالم گرفته_شد از صبح تا حالاهم انگار یه چیزی گم کردم انشاالله که زود وپربارتر برگردین. آقا نشاط عزیز امروز نشاط و سر زندگی هرروز و نداشتم,negative,all_models_right,negative,,positive,,split
+S063,برنامه با بودن هر دوی شما زیباتر میشه,positive,all_models_right,positive,,positive,,confirmed
+S064,با شما کاملا موافقم... این کتاب بسیار زیبا عشق رو روایت کرده.. من این کتاب و هدیه هم دادم... بی‌نهایت سپاس برای دعوت از نویسنده‌اش...,positive,all_models_right,positive,,positive,,confirmed
+S065,سلام و خسته نباشید خدمت همه زحمت کشان برنامه... میشه لطفا من رو زیر پست کمک به امیرپرهام، تگ کنید؟,neutral,all_models_right,positive,,neutral,,split
+S066,امیر از ته چاه,negative,all_models_wrong,neutral,,neutral,,contradicted
+S067,شما بینهایت سرشار از انرژی یا بروایتی بمب انرژی هستین همیشه سالم باشید الهی,positive,all_models_right,positive,,positive,,confirmed
+S068,بهشون بگین مازندرانی حرف بزنن,neutral,all_models_right,neutral,,neutral,,confirmed
+S069,علی دایی و جواد خیابانی,neutral,all_models_right,neutral,,neutral,,confirmed
+S070,بله. عااالیه. دست مریزاد,positive,all_models_right,positive,,positive,,confirmed
+S071,چرا خشاب ندادین به رحمت؟ 😂,positive,all_models_wrong,positive,,neutral,,split
+S072,اگه امروز پسر خوبی باشی وپارازیت ندی، قول میدم بزارم یکروز توبا مهمونمون مصاحبه کنی😉 😉 😉,neutral,all_models_wrong,positive,,positive,,contradicted
+S073,باسلام، آقای رشیدپور لطفا درمورد قانون معافیت و کسری فرزندان ایثارگر هم صحبت کنید بخدا این درست نیست که اول امیدوار کنند بعدش از زندگیمون نیز ناامیدمون کنند، توروخدا تو برنامتون با سردار کمالی صحبت کنید فقط ده دقیقه از برنامتونو اختصاص بدین بهش، چرا میخوان این قانونو بپیچونند توروخدا آقای رشیدپور یه کاریش کن بعد خدا امیدمون به شماست🙏 🙏 🙏,neutral,all_models_wrong,negative,,negative,,contradicted
+S074,نوید محمدزاده و شهاب حسینی,neutral,all_models_right,neutral,,neutral,,confirmed
+S075,آقای تنابنده. هنرمند سنگ اول. هنرمند مردمی. شنبه بیایید و بگویید چرا...؟,negative,all_models_wrong,negative,,neutral,,split
+S076,هربژی کورد,positive,all_models_wrong,positive,,positive,,confirmed
+S077,بزرگترین دزدی دولتی با همکاری شرکت سکه ثامن و وزارتخانه‌ها صنعت معدن وتجارت ووزارت ارتباطات و بانک مرکزی وقوه قضاییه,neutral,all_models_wrong,negative,,neutral,,split
+S078,خسته نباشید میکم برای برنامه خیلی خیلی خوبتون تشکر میکن و از شما دوتا مجری توانمند اقا رضا و اقای نشاط افرین,positive,all_models_right,positive,,positive,,confirmed
+S079,واقعا عالیههه... مرد با شخصیت. دوست داشتنی.. هنرمند و مادببب,positive,all_models_right,positive,,positive,,confirmed
+S080,سلام صبح بخیر چه خوبه که باهم مهربان ترباشیم,neutral,all_models_wrong,positive,,positive,,contradicted
+S081,آقای رشید وور,neutral,all_models_right,neutral,,neutral,,confirmed
+S082,من خیلی به این بانوی محترم ارادت دارم چهره‌ای مهربان ودوست داشتنی وهنرمند قابلی هستن,positive,all_models_right,positive,,positive,,confirmed
+S083,سلام ودرود برآقای رشید پور خیلی جای شما خالی بود من هم به جای مادر شما هستم پسرم,negative,all_models_wrong,positive,,positive,,contradicted
+S084,اقای شهاب حسینی,neutral,all_models_right,neutral,,neutral,,confirmed

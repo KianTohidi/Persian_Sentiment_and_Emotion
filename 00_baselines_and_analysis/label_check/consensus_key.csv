@@ -1,0 +1,41 @@
+﻿task,item_id,text,ground_truth,group,test_row,annotator_1_label,annotator_2_label
+sentiment,S004,سسسلام، واقعا برنامه حالا خورشید داره شروع میشه؟؟؟,positive,all_models_wrong,407,positive,neutral
+sentiment,S005,حمیدفرخ نژادوجوادعزتی ✌,neutral,all_models_wrong,242,positive,neutral
+sentiment,S009,وقتی بابام رفت بیا,negative,all_models_wrong,85,neutral,negative
+sentiment,S013,فیلم هندیه دیگه,negative,all_models_wrong,703,negative,neutral
+sentiment,S017,مژگان: هیچوقت نخواه زیر پای ادمی رو خالی کنی یا بهش ضربه بزنی. چون روزگار باهات تلافی میکنه پس خوب باش و برای همه خوب بخواه.. ‌.,neutral,all_models_wrong,667,positive,neutral
+sentiment,S022,برنامتون عالیه خواهش میکنم ادامه بدید. چرا یهوی؟؟؟,negative,all_models_wrong,604,positive,neutral
+sentiment,S030,لطفا بگید اگر مرده حالا بره سوریه😂 😂 😂,positive,all_models_wrong,671,positive,neutral
+sentiment,S033,آخوندی چهره‌ی سال LINK توکارش یه عالمه دسته گلهای خوب داده وتونسته آدمای زیادی LINK به موفقیتش👏 👏 👏 وزیزراه بهترین چهره ست بااین تفاسیر,negative,all_models_wrong,298,positive,negative
+sentiment,S035,شعرلری تقدیم حالا خورشیدی‌های LINK خورشیدکه نبو حال ما هم LINK که نیسی دلمه تش ایزنی وای حال خرابم، تو بیو سی مرحمم وای دل کبابم، تو بیوآرام جون طبیب دردم، گر بخوی روز د LINK تو نیگردم،,neutral,all_models_wrong,201,neutral,positive
+sentiment,S038,آقای جواد خیابانی عزیز,positive,all_models_wrong,344,positive,neutral
+sentiment,S040,آقای مهران مدیری عزیز,positive,all_models_wrong,518,positive,neutral
+sentiment,S042,بامید خدا اینقدر پیام ندید بسلامت,positive,all_models_wrong,253,negative,neutral
+sentiment,S045,نزدیک عید است خدایا تورا به مهربانیت قسم کسی گرفتار نشه کسی شرمنده خانواده‌اش نباشه هیچ چشمی گریان نشه هیچ قلبی نشکنه کسی مریض و مریض دار نباشه الهی آمین... 🌴 👈,neutral,all_models_wrong,329,positive,neutral
+sentiment,S049,آقارشیدتورا به هرکی که بیشتردوست داری قسم بامن حتماحتماحتماتماس بگیرکاواجب دارم ۰۹۱۴۷۳۴۹۴۲۳,negative,all_models_wrong,180,negative,neutral
+sentiment,S062,امروز نبودین زدم شبکه‌های دیگه حالم گرفته_شد از صبح تا حالاهم انگار یه چیزی گم کردم انشاالله که زود وپربارتر برگردین. آقا نشاط عزیز امروز نشاط و سر زندگی هرروز و نداشتم,negative,all_models_right,650,negative,positive
+sentiment,S065,سلام و خسته نباشید خدمت همه زحمت کشان برنامه... میشه لطفا من رو زیر پست کمک به امیرپرهام، تگ کنید؟,neutral,all_models_right,541,positive,neutral
+sentiment,S071,چرا خشاب ندادین به رحمت؟ 😂,positive,all_models_wrong,752,positive,neutral
+sentiment,S075,آقای تنابنده. هنرمند سنگ اول. هنرمند مردمی. شنبه بیایید و بگویید چرا...؟,negative,all_models_wrong,380,negative,neutral
+sentiment,S077,بزرگترین دزدی دولتی با همکاری شرکت سکه ثامن و وزارتخانه‌ها صنعت معدن وتجارت ووزارت ارتباطات و بانک مرکزی وقوه قضاییه,neutral,all_models_wrong,451,negative,neutral
+emotion,E005,شرم #قاضی_زاده_هاشمی,hate,all_models_wrong,76,anger,hate
+emotion,E007,چقدر شاخ مجازی داریم که هر کدام یک #نسیم_اقدم بالقوه میتوانند باشند؟ شهروندان حبابی از توهم شهرت، محبوبیت و تاثیرگذاری، و لبریز از خشم و خشونت فروخورده و محصول سرکوب آزادیهای اجتماعی و سقوط ارزشهای اخلاقی...,sadness,all_models_wrong,1573,anger,hate
+emotion,E008,رفتم کتاب بگیرم چاپ ۲۰۱۳ شده بود ۲۲ تومن! ۸۰ تا هم بیشتر ازش نبود... فروشنده گفت اوضاع بدی شده. دوستم گفت چیکار میشه کرد؟ گفتم فرار گفت نه ببین دخترم، درواقع فقط مرگ چاره ست. (کاملا جدی بود),sadness,all_models_right,429,surprise,anger
+emotion,E009,طرف میگه به اسید پاشی اعتراض کزده جمهوری اسلامی رومتهم کرده. کجا سیر میکنن اینا؟ #saveAli …,surprise,all_models_wrong,435,surprise,anger
+emotion,E010,من آنفالو كردم؟؟؟!!! من از اين رفتار بيزارم معذرت ميخوام،مطمئناً دستم خورده و متوجه نشدم,sadness,all_models_wrong,1697,surprise,hate
+emotion,E012,چه فال خفنی گرفتی  شماره کارت بدید,surprise,all_models_wrong,1478,happiness,surprise
+emotion,E017,اگر نوشته های زیر همین رشتوی ارزنده را مطالعه کنید بهتر میفهمید که هر لحظه اسرائیل با خطر یک هولوکاست دیگر روبروست و دفاع از جان حق مسلم اسرائیل است در مقابل این تروریستهای وحشی مزدور ج.ا.,anger,all_models_wrong,708,anger,fear
+emotion,E018,قربون صدقه رفتنا هم عوض شده به طرف میگه:خر وحشی دوست داشتنی طرف هم حال میکنه :-)))),surprise,all_models_wrong,1081,happiness,surprise
+emotion,E021,باامید روزهای خوب با یک مدیر عامل فهمیده و  با شعور که بفکر  کارمندان بازنشسته باشذ  کارمندانی که با سختی در ان زمان کار میکردند  روح مهندس مفرح شاد و یاد اقای حسینی هاشمی بخیر,sadness,all_models_wrong,619,sadness,happiness
+emotion,E025,چرا وعده دروغ میدی امنیت اسرائیل؟ آینده اسرائیل؟ شرم بر تو باد بنیامین     …,hate,all_models_wrong,1368,anger,hate
+emotion,E035,در رابطه با حادثه تروريست خاش.... عصبانی و ناراحت هستید درست اما رو به تحلیل های کودکانه نیارید میدونی چند نفر دارن توییتهاتون رو مبخونند و شادی میکنند؟؟؟,anger,all_models_right,846,sadness,anger
+emotion,E037,زنگ زدم به وحید شمسایی تا پست جدید را به او تبریک بگویم. بحث به سمت اختلاف بهدادسلیمی و فوتبالیستها کشیده شد جالببود اسطوره رشتهفوتسال باآن غرور همیشگی که از او سراغ داریم گفت فوتبال یک ورزش خاص است و قابل مقایسه با هیچ ورزشی نیست. گفت فوتبالیستها هر چقدر میگیرند نوش جانشان,surprise,all_models_wrong,1754,surprise,anger
+emotion,E038,من سکته کردم تا آخر فیلم ولی واقعا دم مامانش گرم  …,fear,all_models_wrong,1467,fear,happiness
+emotion,E048,اگر درد را احساس کنیم، زنده ایم و اگر درد دیگران را احساس کنیم انسانیم. چگونه است که ملتی در عذابند و مسئولان هیچ دردی را احساس نمیکنند؟؟!! #Taheri_Movement,surprise,all_models_wrong,190,anger,sadness
+emotion,E051,ی جور مفتضحی مردم انتظار راستگویی و جواب درست از اینا دارن انگار نه میلیارد و من گم کردم  وا بدید,surprise,all_models_wrong,357,surprise,anger
+emotion,E055,فن مترو خراب بود. ملت داشتن غر میزدن. آقای میانسالی گفت: وقتی تو مدرسه به بچهها تجاوز میکنن توقع دارین مترو همهچیزش سالم باشه! #مترو,surprise,all_models_wrong,1488,surprise,sadness
+emotion,E060,ترس چرا   مث یه رفیق دور همی خنده گریه شوخی شیطونی,surprise,all_models_wrong,1677,happiness,fear
+emotion,E073,تجاوز به زن آمریکایی در کما زنی که 14سال در کما به سر می بُرد در بیمارستانی در فونیکس آمریکا مورد تجاوز قرار گرفت و باردار شد به گفته یکی از عوامل بیمارستان که به تازگی از این ماجرا پرده برداری کرده فرزند این زن در 29دسامبر به دنیا آمده است اینا چشم و دل سیر بودن؟ #حجاب_کهن,surprise,all_models_wrong,1335,fear,anger
+emotion,E078,بیا اینم از خوبیش زنگ هم نزنه میگی چرا سراغمو نمیگیره؟!   شایدم اگه زیاد کلافت کرد چاقو لازم شده یه دونه از اینا بفرست براش,surprise,all_models_wrong,1497,fear,surprise
+emotion,E080,قبلا نشنيده بودم،جالب بود,happiness,all_models_wrong,138,happiness,surprise
+emotion,E082,"ای ابوالفضل شعرتو در وصف آنها ناب شد""",sadness,all_models_wrong,738,happiness,sadness

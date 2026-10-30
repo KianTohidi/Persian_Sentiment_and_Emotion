@@ -59,6 +59,12 @@ The codebase is organized in numerical order for reproducibility:
 14. `14_sentiment_statistical_analysis.py`: Bootstrap confidence intervals and McNemar's test for sentiment analysis model comparison
 15. `15_emotion_statistical_analysis.py`: Bootstrap confidence intervals and McNemar's test for emotion detection model comparison
 
+### Fine-tuned baselines and additional analyses:
+- `00_baselines_and_analysis/`: fine-tuning of ParsBERT, XLM-R and mBERT, comparison with the four LLMs (confidence intervals, McNemar tests, error analysis) and the manual label check of texts misclassified by all models. See the README in that folder.
+- `00_annotation_validation/`: annotation validation of the five candidate datasets.
+- `00_robustness_check/`: batch (20) vs. single-instance (1) robustness check of the LLM predictions.
+
+
 ## Getting Started
 ### Prerequisites
 - Google Colab (recommended environment)
